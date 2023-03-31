@@ -1,0 +1,182 @@
+%%%%%%%%%%%%%%%%%%%%% PACKAGE IMPORTS %%%%%%%%%%%%%%%%%%%%%
+\documentclass[11pt]{article}
+\usepackage{amsmath, amsfonts, amsthm, amssymb}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{fullpage}       
+\usepackage{changepage}
+\usepackage{hyperref}
+\usepackage{blindtext}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=blue,
+    pdftitle={Overleaf Example},
+    pdfpagemode=FullScreen,
+    }
+\urlstyle{same}
+
+\newenvironment{level}%
+{\addtolength{\itemindent}{2em}}%
+{\addtolength{\itemindent}{-2em}}
+
+\usepackage{amsmath,amsthm,amssymb}
+
+
+\usepackage[x11names, rgb]{xcolor}
+\usepackage{graphicx}
+\usepackage[nooldvoltagedirection]{circuitikz}
+\usetikzlibrary{decorations,arrows,shapes}
+
+\usepackage{datetime}
+\usepackage{etoolbox}
+\usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{array}
+\usepackage{varwidth}
+\usepackage{tcolorbox}
+\usepackage{circuitikz}
+\usepackage[linguistics]{forest}
+
+%%%%%%%%%%%%%%%%%%%%%%%% QUESTION # %%%%%%%%%%%%%%%%%%%%%%%%
+%% You can ignore this for the most part. Basically it    %%
+%% helps number your questions and creates a new page     %%
+%% with each question for the aesthetics. It also creates %%
+%% parts i.e. (a) (b) (c) for multiple part questions.    %%
+%% To use do: \begin{question} ... \end{question}         %%
+%% and: \begin{part} ... \end{part}                       %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+
+\providetoggle{questionnumbers}
+\settoggle{questionnumbers}{true}
+\newcommand{\noquestionnumbers}{
+    \settoggle{questionnumbers}{false}
+}
+
+\newcounter{questionCounter}
+\newenvironment{question}[2][\arabic{questionCounter}]{%
+    \ifnum\value{questionCounter}=0 \else {\newpage}\fi%
+    \setcounter{partCounter}{0}%
+    \vspace{.25in} \hrule \vspace{0.5em}%
+    \noindent{\bf \iftoggle{questionnumbers}{Question #1: }{}#2}%
+    \addtocounter{questionCounter}{1}%
+    \vspace{0.8em} \hrule \vspace{.10in}%
+}
+
+\newcounter{partCounter}[questionCounter]
+\renewenvironment{part}[1][\alph{partCounter}]{%
+    \addtocounter{partCounter}{1}%
+    \vspace{.10in}%
+    \begin{indented}%
+       {\bf (#1)} %
+}{\end{indented}}
+
+\def\indented#1{\list{}{}\item[]}
+\let\indented=\endlist
+\def\show#1{\ifdefempty{#1}{}{#1\\}}
+
+%%%%%%%%%%%%%%%%%%%%%%%% SHORT CUTS %%%%%%%%%%%%%%%%%%%%%%%%
+%% This is just to improve your quality of life. Instead  %%
+%% of having to type long things, you can type short      %%
+%% things. Ex: \IMP instead of \rightarrow to get ->      %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\IMP{\rightarrow}
+\def\AND{\wedge}
+\def\OR{\vee}
+\def\BI{\leftrightarrow}
+\def\DIFF{\setminus}
+\def\SUB{\subseteq}
+
+\newcolumntype{C}{>{\centering\arraybackslash}m{1.5cm}}
+\renewcommand\qedsymbol{$\blacksquare$}
+
+%%%%%%%%%%%%%%%%%%%%%%%% ANSWER BOX %%%%%%%%%%%%%%%%%%%%%%%%
+%% This will improve the quality of life for your TA.     %%
+%% Use \begin{answer} and \end{answer} to surround your   %%
+%% answers so it will be easier to see. You can adjust    %%
+%% the background and frame colors below as needed.       %%
+%% Here is the manual to help: tinyurl.com/tcolorbox-man  %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newtcolorbox{answer}
+{
+  colback   = green!5!white,    % Background color
+  colframe  = green!75!black,   % Outline color
+  box align = center,           % Align box on text line
+  varwidth upper,               % Enables multi line input
+  hbox                          % Bounds box to text width
+}
+
+%%%%%%%%%%%%%%%%% Identifying Information %%%%%%%%%%%%%%%%%
+%% For 311, we'd rather you DIDN'T tell us who you are   %%
+%% in your homework so that we're not biased when        %%
+%% So, even if you fill this information in, it will not %%
+%% show up in the document unless you uncomment \header  %%
+%% below                                                 %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\myhwname}{Homework 1}
+\newcommand{\myname}{Sebastian Liu}
+\newcommand{\myemail}{ll57@cs.washington.edu}
+\newcommand{\mysection}{AD}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%% Document Options %%%%%%%%%%%%%%%%%%%%%%
+\noquestionnumbers
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%% WORK BELOW %%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\begin{center}
+    \textbf{Homework 1} \bigskip
+\end{center}
+
+%%%%%%%%%%%%%%%%%%%%%%%% Question# 1 %%%%%%%%%%%%%%%%%%%%%%%%
+\begin{question}{1. The Level Is in the Details (10 points)}
+   \begin{part}
+        \begin{answer}
+            \textbf{Correctness Level:} -1
+
+            \textbf{Explanation:} Since the function is defined on pair of colors where each color is either red, green, or blue, so we have $2 \cdot 3 = 6$ total possible inputs. Because we can use exhaustive testing on the small number of inputs, the function requires a correctness level of -1.
+
+        \end{answer}
+   \end{part}
+   
+   \begin{part}
+        \begin{answer}
+            \textbf{Correctness Level:} 0
+
+            \textbf{Explanation:} Because the function only contains a single returning statement and the behavior of the function is already described by the mathematical function in the spec, the function requires a correctness level of 0.
+        \end{answer}
+   \end{part}
+
+   \begin{part}
+        \begin{answer}
+            \textbf{Correctness Level:} -1
+
+            \textbf{Explanation:}
+        \end{answer}
+    \end{part}
+
+    \begin{part}
+        \begin{answer}
+            \textbf{Correctness Level:} -1
+
+            \textbf{Explanation:}
+        \end{answer}
+    \end{part}
+
+    \begin{part}
+        \begin{answer}
+            \textbf{Correctness Level:} -1
+
+            \textbf{Explanation:}
+        \end{answer}
+    \end{part}
+\end{question}
+
+
+\end{document}
