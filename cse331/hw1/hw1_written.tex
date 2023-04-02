@@ -140,7 +140,9 @@
         \begin{answer}
             \textbf{Correctness Level:} -1
 
-            \textbf{Explanation:} Since the function is defined on pair of colors where each color is either red, green, or blue, so we have $2 \cdot 3 = 6$ total possible inputs. Because we can use exhaustive testing on the small number of inputs, the function requires a correctness level of -1.
+            \textbf{Explanation:} {Since the function is defined on pair of colors where each color is either red, green, or blue, 
+            so we have $2 \cdot 3 = 6$ total possible inputs. Because we can use exhaustive testing on the small number of inputs, 
+            the function requires a correctness level of -1.}
 
         \end{answer}
    \end{part}
@@ -149,31 +151,36 @@
         \begin{answer}
             \textbf{Correctness Level:} 0
 
-            \textbf{Explanation:} Because the function only contains a single returning statement and the behavior of the function is already described by the mathematical function in the spec, the function requires a correctness level of 0.
+            \textbf{Explanation:} {There are infinitely many inputs. Because the function only contains a single returning statement 
+            and the calculation inside the function is described by the mathematical function straight from the specification, the 
+            function translate the behavior straight from the spec requires a correctness level of 0.}
         \end{answer}
    \end{part}
 
    \begin{part}
         \begin{answer}
-            \textbf{Correctness Level:} -1
-
-            \textbf{Explanation:}
+            {It falls into level 3 of correctness. Since we have infinitely many inputs and a declarative specification, the correctness
+             level cannot be -1 or 0. Because we do not know what level of mutation the function has, we have to take into account the 
+             most complex case possible (array/object mutation). Therefore, the program falls into level 3 of correctness.}
         \end{answer}
     \end{part}
 
     \begin{part}
         \begin{answer}
-            \textbf{Correctness Level:} -1
-
-            \textbf{Explanation:}
+            {It fits into level 2 of correctness. Since we have infinitely many inputs and a declarative specification, the correctness
+            level cannot be -1 or 0. Because we have local variable mutation but not heap-allocated data mutation (aka array/object mutation),
+            the program fits into level 2 of correctness.}
         \end{answer}
     \end{part}
 
+    \newpage
+
     \begin{part}
         \begin{answer}
-            \textbf{Correctness Level:} -1
-
-            \textbf{Explanation:}
+            {It's not ok to assume that the first problem has a lower correctness level, because the correctness level depends on whether the
+            specification describes the calculation or not (i.e. is non-declarative or not). If both specifications are declarative, meaning we
+            cannot translate our program straight from the specification, both problems require 1-3 level of correctness depending on their implementations.
+            The length of the specification doesn't necessarily affect the level of correctness.}
         \end{answer}
     \end{part}
 \end{question}
