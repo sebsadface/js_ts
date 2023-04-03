@@ -271,19 +271,26 @@
 
     \begin{part}
         \begin{answer}
-            
+            We might want to add more tests when we replace a non-recursive function call with a recursive function call, or when we replace a function call
+            that doesn't have hidden branches with a function that has hidden branches. We generally treat function calls as straight-line code that needs
+            two test cases, but when a function call is recursive or has hidden branches, we need to add additional test cases to test the additional subdomains the 
+            recursive call or the hidden conditional introduces.
         \end{answer}
     \end{part}   
 
     \begin{part}
         \begin{answer}
-            
+            Generally, the changes that don't involve any changes in the subdomains of the inputs and outputs would not require changing any test inputs. For example, 
+            if we change "if ($x > 5$) \{ return x + 1 \} else \{return x + 2\}" to "if ($x > 5$) \{ return x - 1 \} else \{return x - 2\}", it would be ok if we don't
+            change any test inputs, because the two branches in the conditional are the same before and after the change.
         \end{answer}
     \end{part}   
 
     \begin{part}
         \begin{answer}
-            
+            We may need to change the expected outputs in all three cases. For (c) and (d), we may need to change outputs because we might need to change the inputs or 
+            add more tests which will introduce different outputs. For (e), we may need to change the expected outputs because we might change the underlying calculation
+            of the function, which would produce different outputs even though we have the same input (like my example in part (e)).
         \end{answer}
     \end{part}   
 \end{question}
