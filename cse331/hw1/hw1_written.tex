@@ -295,4 +295,98 @@
     \end{part}   
 \end{question}
 
+%%%%%%%%%%%%%%%%%%%%%%%% Question# 4 %%%%%%%%%%%%%%%%%%%%%%%%
+\begin{question}{4. Good, Better, Test (18 points)}
+    \begin{part}
+        \begin{answer}
+           \textbf{Number of tests:} We would need 4 test cases.\\
+            \textbf{Explanation: } In the code, we have 4 branches each corresponds to one possible inputs (4 possible inputs in total) and contains a straight line calculation
+                                   that returns a constant. Since we only have a small number of inputs, we should do an exhaustive testing (tests all 4 possible inputs).  \\
+            \textbf{Example set: } \begin{align*} &case1: color = "red" &&case3: color = "blue"\\ &case2: color = "green" &&case4: color = undefined \end{align*}
+            \textbf{Reasoning: } case1 tests the red branch, case2 tests the green branch, case3 tests the blue branch, and case4 tests the default branch. According to the
+                                 clear-box testing rules, since we have 4 branches and each branch has a straight line calculation, we are supposed to have 2 tests for each branch
+                                 making it 8 tests in total. However, we only have one possible input for each subdomain, so we only need 4 tests in total to cover all subdomains.
+                                 Also, because we have a small number of inputs which makes this function require level -1 of correctness, in which case, we need to test all
+                                 4 possible inputs.
+        \end{answer}
+    \end{part}   
+ 
+    \begin{part}
+        \begin{answer}
+            \textbf{Number of tests:} We would need 6 test cases.\\
+            \textbf{Explanation: } In the code, we have 3 branches each corresponds to one possible color input and contains a straight line calculation. 
+                                  Since each branch needs 2 tests, we need 6 test cases in total.  \\
+            \textbf{Example set: } \begin{align*}
+                &case1: color = "red", x = -54 &&case4: color = "green", x = -23\\ &case2: color = "red", x = 32; &&case5: color = "blue", x = 64\\ &case3: color = "green", x = 82 &&case6: color = "blue", x = -47 
+            \end{align*}
+            \textbf{Reasoning: } case1 and case2 test the red branch to see if x is returned consistently; case3 and case4 tests the green branch to see if both -x is returned consistently; case5 and case6 test the blue branch and see if 0 is returned consistently. 
+                                 According to the clear-box testing rules, since we have 3 branches and each branch has a straight line calculation, we need to have 2 tests for each branch making it 6 tests in total.
+        \end{answer}
+    \end{part} 
+
+    \newpage
+
+    \begin{part}
+        \begin{answer}
+            \textbf{Number of tests: } We would need 9 test cases. \\
+            \textbf{Explanation: } In the code, we have 6 hidden branches from two calls of f2. Each function call to f2 contains 3 branches. Since the number passed into
+                                   f2 are fixed, we only have $3 \cdot 3 = 9$ possible combination of color inputs. Since each hidden subdomains contains a straight line 
+                                   calculation that returns a constant and we only have a small number of inputs, we should do an exhaustive testing (test all 9 possible inputs).  \\
+            \textbf{Example set: } \begin{align*}&case1: color1 = "red", color2 = "red" &&case6: color1 = "green", color2 = "blue"\\ 
+                                                &case2: color1 = "red", color2 = "green" &&case7: color1 = "blue", color2 = "red" \\ 
+                                                &case3: color1 = "red", color2 = "blue" &&case8: color1 = "blue", color2 = "green" \\
+                                                &case4: color1 = "green", color2 = "red" &&case9: color1 = "blue", color2 = "blue"\\ 
+                                                &case5: color1 = "green", color2 = "green" 
+                                 \end{align*}
+            \textbf{Reasoning: } case1 tests the red-red combination, case2 tests the red-green combination, case3 tests the red-blue combination, case4 tests the green-red combination, and so on. 
+                                 Because we have a small number of inputs (9 possible inputs in total) which makes this function require level -1 of correctness, in which case, we need to test all
+                                 9 possible inputs.
+        \end{answer}
+    \end{part}   
+
+    \begin{part}
+        \begin{answer}
+            \textbf{Number of tests: } We would need 3 test cases. \\
+            \textbf{Explanation: } The recursive function has 1 base case and 1 recursive case. There's only one possible test for the base case, and we need two tests for the recursive case, making it
+                                    3 tests in total.  \\
+            \textbf{Example set: } \begin{align*}&case1: A = [] &&case3: A = [34, -12, 0]\\ 
+                                                &case2: A = [25]
+                                 \end{align*}
+            \textbf{Reasoning: } Following the "0-1-many" heuristic for testing recursive functions, case1 tests base case, case2 tests recursively calling the base case, case3 tests recursively calling
+                                the recursive call. 
+                                 
+        \end{answer}
+    \end{part}   
+
+    \newpage
+    \begin{part}
+        \begin{answer}
+            \textbf{Number of tests: } We would need 4 test cases. \\
+            \textbf{Explanation: } The recursive function has 1 base case and 1 recursive case. We need two tests for base case and two for the recursive case, making it
+                                    4 tests in total.  \\
+            \textbf{Example set: } \begin{align*}&case1: n = -1 &&case3: n = 1\\ 
+                                                &case2: n = 0 &&case4: n = 2
+                                 \end{align*}
+            \textbf{Reasoning: } Following the "0-1-many" heuristic for testing recursive functions, case1 and case2 test base case, case3 tests recursively calling the base case, case4 tests recursively calling
+                                the recursive call. 
+        \end{answer}
+    \end{part}   
+
+    \begin{part}
+        \begin{answer}
+            \textbf{Number of tests: } We would need 7 test cases. \\
+            \textbf{Explanation: } The recursive function has 1 base case and 3 recursive cases. There's only one possible test for the base case, and we need two tests for the recursive case, making it
+                                  $1 + 2 \cdot 3 = 7$ tests in total. \\
+            \textbf{Example set: } \begin{align*}&case1: n = 0 &&case5: n = 7\\ 
+                                                &case2: n = 3 &&case6: n = 5 \\
+                                                &case3: n = 6 &&case7: n = 8 \\
+                                                &case4: n = 4 
+                                 \end{align*}
+            \textbf{Reasoning: } Following the "0-1-many" heuristic for testing recursive functions, case1 tests the base case, case3 and case4 test the first recursive case, case4 and case5 test the second recursive case, 
+                                 and case6 and case7 test the third recursive case.
+        \end{answer}
+    \end{part}   
+
+\end{question}
+
 \end{document}
