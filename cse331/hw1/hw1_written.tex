@@ -346,44 +346,46 @@
 
     \begin{part}
         \begin{answer}
-            \textbf{Number of tests: } We would need 3 test cases. \\
-            \textbf{Explanation: } The recursive function has 1 base case and 1 recursive case. There's only one possible test for the base case, and we need two tests for the recursive case, making it
-                                    3 tests in total.  \\
+            \textbf{Number of tests: } We would need 4 test cases. \\
+            \textbf{Explanation: } The recursive function has 1 base case and 1 recursive case. There's only one possible test for the base case, and we need one test for recursively calling the base case, two more tests
+                                  for recursively calling the recursive case, making it 4 tests in total.  \\
             \textbf{Example set: } \begin{align*}&case1: A = [] &&case3: A = [34, -12, 0]\\ 
-                                                &case2: A = [25]
+                                                &case2: A = [25] &&case4: A = [75, -56, 0, 20, -15]
                                  \end{align*}
-            \textbf{Reasoning: } Following the "0-1-many" heuristic for testing recursive functions, case1 tests base case, case2 tests recursively calling the base case, case3 tests recursively calling
-                                the recursive call. 
-                                 
+            \textbf{Reasoning: } Following the "0-1-many" heuristic for testing recursive functions, case1 tests base case, case2 tests recursively calling the base case ($A.length - 1 = 0$), case3 and case4 test recursively calling
+                                the recursive call ($A.length - 1 > 0$). 
+                                   
         \end{answer}
     \end{part}   
 
     \newpage
     \begin{part}
         \begin{answer}
-            \textbf{Number of tests: } We would need 4 test cases. \\
-            \textbf{Explanation: } The recursive function has 1 base case and 1 recursive case. We need two tests for base case and two for the recursive case, making it
-                                    4 tests in total.  \\
-            \textbf{Example set: } \begin{align*}&case1: n = -1 &&case3: n = 1\\ 
-                                                &case2: n = 0 &&case4: n = 2
+            \textbf{Number of tests: } We would need 5 test cases. \\
+            \textbf{Explanation: } The recursive function has 1 base case and 1 recursive case. We need two tests for base case, one for recursively calling base case, and two more for recursively 
+                                   calling the recursive case making it 5 tests in total.  \\
+            \textbf{Example set: } \begin{align*}&case1: n = -1 &&case4: n = 2\\ 
+                                                &case2: n = 0 &&case5: n = 6 \\
+                                                &case3: n = 1 
                                  \end{align*}
-            \textbf{Reasoning: } Following the "0-1-many" heuristic for testing recursive functions, case1 and case2 test base case, case3 tests recursively calling the base case, case4 tests recursively calling
-                                the recursive call. 
+            \textbf{Reasoning: } Following the "0-1-many" heuristic for testing recursive functions, case1 and case2 test base case, case3 tests recursively calling the base case ($n - 1 = 0$), case4 and case5 tests recursively calling
+                                the recursive call ($n - 1 > 0$). 
         \end{answer}
     \end{part}   
 
     \begin{part}
         \begin{answer}
-            \textbf{Number of tests: } We would need 7 test cases. \\
-            \textbf{Explanation: } The recursive function has 1 base case and 3 recursive cases. There's only one possible test for the base case, and we need two tests for the recursive case, making it
-                                  $1 + 2 \cdot 3 = 7$ tests in total. \\
-            \textbf{Example set: } \begin{align*}&case1: n = 0 &&case5: n = 7\\ 
-                                                &case2: n = 3 &&case6: n = 5 \\
-                                                &case3: n = 6 &&case7: n = 8 \\
-                                                &case4: n = 4 
+            \textbf{Number of tests: } We would need 10 test cases. \\
+            \textbf{Explanation: } The recursive function has 1 base case and 3 recursive cases. There's only one possible test for the base case, and we need three tests for each of the recursive case (one for recursively calling the base case, two more for 
+             recursively calling the recursive case), making it $1 + 3 \cdot 3 = 10$ tests in total. \\
+            \textbf{Example set: } \begin{align*}&case1: n = 0 &&case6: n = 4\\ 
+                                                &case2: n = 3 &&case7: n = 7 \\
+                                                &case3: n = 6 &&case8: n = 2 \\
+                                                &case4: n = 9 &&case9: n = 5 \\
+                                                &case5: n = 1 &&case10: n = 8 
                                  \end{align*}
-            \textbf{Reasoning: } Following the "0-1-many" heuristic for testing recursive functions, case1 tests the base case, case3 and case4 test the first recursive case, case4 and case5 test the second recursive case, 
-                                 and case6 and case7 test the third recursive case.
+            \textbf{Reasoning: } Following the "0-1-many" heuristic for testing recursive functions, case1 tests the base case; case3, case5, and case8 test recursively calling the base case for each of the recursive branch ($n - 3 = 0, n - 1 = 0$, and $n - 2 = 0$).
+                                 Case3 and 4, case6 and 7, case9 and 10 test recursively calling the recursive case for each of the recursive branches ($n - 3 > 0, n - 1 > 0$, and $n - 2 > 0$).
         \end{answer}
     \end{part}   
 
