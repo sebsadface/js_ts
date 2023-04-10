@@ -63,11 +63,11 @@ if (pattern === undefined) {
   let result: Quilt | Error = new Error('unknown error');
   try {
     switch (pattern) {
-      case "A": result = PatternA(); break;
-      case "B": result = PatternB(); break;
-      case "C": result = PatternC(); break;
-      case "D": result = PatternD(); break;
-      case "E": result = PatternE(); break;
+      case "A": result = PatternA(GetColor(params)); break;
+      case "B": result = PatternB(GetColor(params)); break;
+      case "C": result = PatternC(GetColor(params)); break;
+      case "D": result = PatternD(GetColor(params)); break;
+      case "E": result = PatternE(GetColor(params)); break;
       default:  throw new Error('impossible');
     }
   } catch (e) {
