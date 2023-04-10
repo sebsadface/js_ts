@@ -5,3 +5,7 @@
 *.log
 *.out
 *.gz
+node_modules/*
+!node_modules/coZ
+.vscode
+dist
