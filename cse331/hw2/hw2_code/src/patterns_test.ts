@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 import { NW, GREEN, ROUND, Square, Row, rnil, rcons, qnil, qcons, RED, STRAIGHT, SE, SW, NE } from './quilt';
-import { PatternA, PatternB, PatternC, BadArgument } from './patterns';
+import { PatternA, PatternB, PatternC, PatternD, BadArgument } from './patterns';
 
 
 describe('patterns', function() {
@@ -77,7 +77,7 @@ describe('patterns', function() {
          qcons(row_green, qcons(row_green, qcons(row_green, qcons(row_green, qnil)))));
 
   });
-  
+
   it('PatternC', function() {
     const row_n_green: Row = rcons(ne_round_green, rcons(nw_round_green, rnil));
     const row_s_green: Row = rcons(se_round_green, rcons(sw_round_green, rnil));
@@ -113,6 +113,40 @@ describe('patterns', function() {
 
   });
 
+  it('PatternD', function() {
+    const row_n_green: Row = rcons(ne_round_green, rcons(nw_round_green, rnil));
+    const row_s_green: Row = rcons(se_round_green, rcons(sw_round_green, rnil));
+    const row_n_red: Row = rcons(ne_round_red, rcons(nw_round_red, rnil));
+    const row_s_red: Row = rcons(se_round_red, rcons(sw_round_red, rnil));
+
+    // bad argument n < 0, test 1
+    assert.throws(() => PatternD(-1, GREEN), BadArgument);
+
+    // bad argument n < 0, test 2
+    assert.throws(() => PatternD(-8, RED), BadArgument);
+
+    // bad argument n % 2 !== 0, test 1
+    assert.throws(() => PatternD(1, GREEN), BadArgument);
+
+    // bad argument n % 2 !== 0, test 2
+    assert.throws(() => PatternD(9, RED), BadArgument);
+
+    // 0-1-many heuristic, base case
+    assert.deepEqual(PatternD(0), qnil);
+
+    // 0-1-many heuristic, 1 case, single recursive call
+    assert.deepEqual(PatternD(2), qcons(row_s_green, qcons(row_n_green, qnil)));
+
+    // 0-1-many heuristic, 1st many case, >1 recursive call
+    assert.deepEqual(PatternD(4, RED),
+         qcons(row_s_red, qcons(row_n_red, qcons(row_s_red, qcons(row_n_red, qnil)))));
+
+    // 0-1-many heuristic, 2nd many case, >1 recursive call
+    assert.deepEqual(PatternD(6, GREEN),
+         qcons(row_s_green, qcons(row_n_green, qcons(row_s_green, qcons(row_n_green, 
+               qcons(row_s_green, qcons(row_n_green, qnil)))))));
+
+  });
 
 
 
