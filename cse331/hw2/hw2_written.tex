@@ -277,10 +277,10 @@
         \begin{answer}
             \begin{align*}
                 \textbf{func\;\;} &sflip\_vert(nil) := nil \\
-                &sflip\_vert(Square(s, c, NW)) := Square(s, c, SW) \tag{for any $s : Shape$ and $c : Color$} \\
-                &sflip\_vert(Square(s, c, SW)) := Square(s, c, NW) \tag{for any $s : Shape$ and $c : Color$} \\
-                &sflip\_vert(Square(s, c, NE)) := Square(s, c, SE) \tag{for any $s : Shape$ and $c : Color$} \\
-                &sflip\_vert(Square(s, c, SE)) := Square(s, c, NE) \tag{for any $s : Shape$ and $c : Color$} \\
+                &sflip\_vert(\{shape: s, color: c, corner: NW\}) := \{shape: s, color: c, corner: SW\} \tag{for any $s : Shape$ and $c : Color$} \\
+                &sflip\_vert(\{shape: s, color: c, corner: SW\}) := \{shape: s, color: c, corner: NW\} \tag{for any $s : Shape$ and $c : Color$} \\
+                &sflip\_vert(\{shape: s, color: c, corner: NE\}) := \{shape: s, color: c, corner: SE\} \tag{for any $s : Shape$ and $c : Color$} \\
+                &sflip\_vert(\{shape: s, color: c, corner: SE\}) := \{shape: s, color: c, corner: NE\} \tag{for any $s : Shape$ and $c : Color$} \\
             \end{align*}
         \end{answer}
        \end{part}
@@ -300,21 +300,30 @@
        \begin{part}[d]
         \begin{answer}
             \begin{align*}
-                \textbf{func\;\;} &rflip\_vert(nil) &&:= nil \\
-                &rflip\_vert(cons(s, R)) &&:= cons(sflip\_vert(s), rflip\_vert(R)) \tag{for any $s : Square$ and $R : Row$}  
+                \textbf{func\;\;} &rflip\_vert(rnil) &&:= rnil \\
+                &rflip\_vert(rcons(s, R)) &&:= rcons(sflip\_vert(s), rflip\_vert(R)) \tag{for any $s : Square$ and $R : Row$}  
             \end{align*}
         \end{answer}
        \end{part}
-
+\newpage
        \begin{part}[f]
         \begin{answer}
-        
+            \begin{align*}
+                &nil &&nil \\
+                &cons(u,nil) &&cons(r(u), nil) \\
+                &cons(u, cons(v,nil)) &&cons(r(v), cons(r(u), nil)) \\
+                &cons(u, cons(v, cons(w, nil))) &&cons(r(w), cons(r(v), cons(r(u), nil)))\\
+                &...
+             \end{align*}
         \end{answer}
        \end{part}
 
        \begin{part}[g]
         \begin{answer}
-        
+            \begin{align*}
+                \textbf{func\;\;} &qflip\_vert(qnil) &&:= qnil \\
+                &qflip\_vert(qcons(r, Q)) &&:= qconcat(qflip\_vert(Q), qcons(rflip\_vert(r),qnil)) \tag{for any $r : Row$ and $Q : Quilt$}  
+            \end{align*}
         \end{answer}
        \end{part}
 \end{question}

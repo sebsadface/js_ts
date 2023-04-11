@@ -23,7 +23,11 @@ export function rflip_vert(r: Row): Row {
 
 /** Returns the same quilt but flipped vertically. */
 export function qflip_vert(q: Quilt): Quilt {
-    return q;  // TODO: replace
+    if (q === qnil) {
+        return qnil;
+    } else {
+        return qconcat(qflip_vert(q.tl), qcons(q.hd, qnil));
+    }
 }
 
 
