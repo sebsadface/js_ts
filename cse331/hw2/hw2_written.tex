@@ -214,25 +214,59 @@
 \begin{question}{2. Twice to Meet You (16 points)}
     \begin{part}
         \begin{answer}
-            
+            \begin{align*}
+                sum(L) &= sum(cons(a, cons(b, nil))) \tag{Def of $L$} \\
+                &= a + sum(cons(b, nil)) \tag{Def of $sum$} \\
+                &= a + b + sum(nil) \tag{Def of $sum$} \\
+                &= a + b + 0 \tag{Def of $sum$} \\
+                &= a + b
+            \end{align*}
         \end{answer}
     \end{part}
 
     \begin{part}
         \begin{answer}
-        
+            \begin{align*}
+                sum(twice\_evens(L)) &= sum(twice\_evens(cons(a, cons(b, nil)))) \tag{Def of $L$} \\
+                &= sum(cons(2a, twice\_odds(cons(b, nil)))) \tag{Def of $twice\_evens$} \\
+                &= sum(cons(2a, cons(b, twice\_evens(nil)))) \tag{Def of $twice\_odds$} \\
+                &= sum(cons(2a, cons(b, nil))) \tag{Def of $twice\_evens$} \\
+                &= 2a + sum(cons(b, nil)) \tag{Def of $sum$} \\
+                &= 2a + b + sum(nil) \tag{Def of $sum$} \\
+                &= 2a + b + 0 \tag{Def of $sum$} \\
+                &= 2a + b
+            \end{align*}
         \end{answer}
     \end{part}
 
     \begin{part}
         \begin{answer}
-        
+            \begin{align*}
+                sum(twice\_odds(L)) &= sum(twice\_odds(cons(a, cons(b, nil)))) \tag{Def of $L$} \\
+                &= sum(cons(a, twice\_evens(cons(b, nil)))) \tag{Def of $twice\_odds$} \\
+                &= sum(cons(a, cons(2b, twice\_odds(nil)))) \tag{Def of $twice\_evens$} \\
+                &= sum(cons(a, cons(2b, nil))) \tag{Def of $twice\_odds$} \\
+                &= a + sum(cons(2b, nil)) \tag{Def of $sum$} \\
+                &= a + 2b + sum(nil) \tag{Def of $sum$} \\
+                &= a + 2b + 0 \tag{Def of $sum$} \\
+                &= a + 2b
+            \end{align*}
         \end{answer}
     \end{part}
 
+    \newpage 
+
     \begin{part}
         \begin{answer}
-        
+            \begin{align*}
+                x + y &= sum(twice\_evens(L)) + y \tag{Def of $x$} \\
+                &= sum(twice\_evens(L)) + sum(twice\_odds(L)) \tag{Def of $y$} \\
+                &= (2a + b) + sum(twice\_odds(L)) \tag{Since $sum(twice\_evens(L)) = 2a + b$} \\
+                &= (2a + b) + (a + 2b) \tag{Since $sum(twice\_odds(L)) = a + 2b$}\\
+                &= 3a + 3b \\
+                &= 3(a+b) \\
+                &= 3 sum(L) \tag{Since $sum(L) = a + b$}
+            \end{align*}
         \end{answer}
     \end{part}
 \end{question}
@@ -241,19 +275,34 @@
 \begin{question}{3. Skinny Flipping (16 points)}
     \begin{part}[a]
         \begin{answer}
-        
+            \begin{align*}
+                \textbf{func\;\;} &sflip\_vert(nil) := nil \\
+                &sflip\_vert(Square(s, c, NW)) := Square(s, c, SW) \tag{for any $s : Shape$ and $c : Color$} \\
+                &sflip\_vert(Square(s, c, SW)) := Square(s, c, NW) \tag{for any $s : Shape$ and $c : Color$} \\
+                &sflip\_vert(Square(s, c, NE)) := Square(s, c, SE) \tag{for any $s : Shape$ and $c : Color$} \\
+                &sflip\_vert(Square(s, c, SE)) := Square(s, c, NE) \tag{for any $s : Shape$ and $c : Color$} \\
+            \end{align*}
         \end{answer}
        \end{part}
 
        \begin{part}[c]
         \begin{answer}
-        
+            \begin{align*}
+               &nil &&nil \\
+               &cons(a,nil) &&cons(s(a), nil) \\
+               &cons(a, cons(b,nil)) &&cons(s(a), cons(s(b), nil)) \\
+               &cons(a, cons(b, cons(c, nil))) &&cons(s(a), cons(s(b), cons(s(c), nil)))\\
+               &...
+            \end{align*}
         \end{answer}
        \end{part}
 
        \begin{part}[d]
         \begin{answer}
-        
+            \begin{align*}
+                \textbf{func\;\;} &rflip\_vert(nil) &&:= nil \\
+                &rflip\_vert(cons(s, R)) &&:= cons(sflip\_vert(s), rflip\_vert(R)) \tag{for any $s : Square$ and $R : Row$}  
+            \end{align*}
         \end{answer}
        \end{part}
 
