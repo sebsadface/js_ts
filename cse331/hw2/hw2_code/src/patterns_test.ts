@@ -45,6 +45,10 @@ describe('patterns', function() {
     // 0-1-many heuristic, 2nd many case, >1 recursive call
     assert.deepEqual(PatternA(4, GREEN),
          qcons(row_green, qcons(row_green, qcons(row_green, qcons(row_green, qnil)))));
+     
+    // 0-1-many heuristic, 3rd many case, >1 recursive call
+    assert.deepEqual(PatternA(5),
+         qcons(row_green, qcons(row_green, qcons(row_green, qcons(row_green, qcons(row_green, qnil))))));
 
   });
 
@@ -71,6 +75,10 @@ describe('patterns', function() {
     // 0-1-many heuristic, 2nd many case, >1 recursive call
     assert.deepEqual(PatternB(4, GREEN),
          qcons(row_green, qcons(row_green, qcons(row_green, qcons(row_green, qnil)))));
+
+    // 0-1-many heuristic, 3rd many case, >1 recursive call
+    assert.deepEqual(PatternB(5),
+         qcons(row_green, qcons(row_green, qcons(row_green, qcons(row_green, qcons(row_green, qnil))))));
 
   });
 
@@ -107,6 +115,11 @@ describe('patterns', function() {
          qcons(row_n_green, qcons(row_s_green, qcons(row_n_green, qcons(row_s_green, 
                qcons(row_n_green, qcons(row_s_green, qnil)))))));
 
+     // 0-1-many heuristic, 3rd many case, >1 recursive call
+    assert.deepEqual(PatternC(8),
+         qcons(row_n_green, qcons(row_s_green, qcons(row_n_green, qcons(row_s_green, 
+               qcons(row_n_green, qcons(row_s_green, qcons(row_n_green, qcons(row_s_green, qnil)))))))));
+
   });
 
   it('PatternD', function() {
@@ -141,6 +154,11 @@ describe('patterns', function() {
     assert.deepEqual(PatternD(6, GREEN),
          qcons(row_s_green, qcons(row_n_green, qcons(row_s_green, qcons(row_n_green, 
                qcons(row_s_green, qcons(row_n_green, qnil)))))));
+
+     // 0-1-many heuristic, 3rd many case, >1 recursive call
+    assert.deepEqual(PatternD(8),
+         qcons(row_s_green, qcons(row_n_green, qcons(row_s_green, qcons(row_n_green, 
+               qcons(row_s_green, qcons(row_n_green, qcons(row_s_green, qcons(row_n_green, qnil)))))))));
 
   });
 
@@ -178,5 +196,14 @@ describe('patterns', function() {
          qcons(row_ns_green, qcons(row_sn_green, qcons(row_ns_green, qcons(row_sn_green, 
                qcons(row_ns_green, qnil))))));
 
+     // 0-1-many heuristic, 3rd many case, >1 recursive call
+    assert.deepEqual(PatternE(6),
+         qcons(row_ns_green, qcons(row_sn_green, qcons(row_ns_green, qcons(row_sn_green, 
+               qcons(row_ns_green, qcons(row_sn_green, qnil)))))));
+
+     // 0-1-many heuristic, 4th many case, >1 recursive call
+    assert.deepEqual(PatternE(7),
+          qcons(row_ns_green, qcons(row_sn_green, qcons(row_ns_green, qcons(row_sn_green, 
+               qcons(row_ns_green, qcons(row_sn_green, qcons(row_ns_green, qnil))))))));
   });
 });

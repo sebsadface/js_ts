@@ -1,16 +1,50 @@
 import * as assert from 'assert';
-import { NW, NE, SW, SE, GREEN, ROUND, Square, rnil, rcons, qnil, qcons } from './quilt';
-import { sew, symmetrize } from './quilt_ops';
+import { NW, NE, SW, SE, GREEN, ROUND, Square, rnil, rcons, qnil, qcons, Row } from './quilt';
+import { rflip_vert, sew, sflip_vert, symmetrize } from './quilt_ops';
 
 
 describe('quilt_ops', function() {
 
+  // We have 4 possible inputs (4 possible corners), making the function -1 correctness level
+  // so we need exhaustively test all 4 possble corners.
   it('sflip_vert', function() {
-    // TODO: implement
+    // Exhaustive test1, s = nw_sq
+    assert.deepEqual(sflip_vert(nw_sq), sw_sq);
+
+    // Exhaustive test2, s = ne_sq
+    assert.deepEqual(sflip_vert(ne_sq), se_sq);
+
+    // Exhaustive test3, s = sw_sq
+    assert.deepEqual(sflip_vert(sw_sq), nw_sq);
+
+    // Exhaustive test4, s = se_sq
+    assert.deepEqual(sflip_vert(se_sq), ne_sq);
   });
 
   it('rflip_vert', function() {
-    // TODO: implement
+    const r1 : Row = rcons(ne_sq, rnil);
+    const r2 : Row = rcons(sw_sq, rnil);
+    const r3 : Row = rcons(nw_sq, rcons(ne_sq, rnil));
+    const r4 : Row = rcons(sw_sq, rcons(se_sq, rcons(sw_sq, rnil)));
+    const r5 : Row = rcons(nw_sq, rcons(ne_sq, rcons(nw_sq, rcons(ne_sq, rnil))));
+
+    // 0-1-many heuristic, base case
+    assert.deepEqual(rflip_vert(rnil), rnil);
+
+    // 0-1-many heuristic, 1st 1 case, single recursive call
+    assert.deepEqual(rflip_vert(r1), rcons(se_sq, rnil));
+
+    // 0-1-many heuristic, 1st 1 case, single recursive call
+    assert.deepEqual(rflip_vert(r2), rcons(nw_sq, rnil));
+
+    // 0-1-many heuristic, 1st many case, >1 recursive call
+    assert.deepEqual(rflip_vert(r3), rcons(sw_sq, rcons(se_sq, rnil)));
+
+    // 0-1-many heuristic, 2nd many case, >1 recursive call
+    assert.deepEqual(rflip_vert(r4), rcons(nw_sq, rcons(ne_sq, rcons(nw_sq, rnil))));
+     
+    // 0-1-many heuristic, 3rd many case, >1 recursive call
+    assert.deepEqual(rflip_vert(r5), rcons(sw_sq, rcons(se_sq, rcons(sw_sq, rcons(se_sq, rnil)))));
   });
 
   it('qflip_vert', function() {

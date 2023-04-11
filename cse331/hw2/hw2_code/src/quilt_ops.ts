@@ -1,15 +1,24 @@
-import { Square, Row, rconcat, Quilt, qnil, qcons, qconcat } from './quilt';
+import { Square, Row, rconcat, Quilt, qnil, qcons, qconcat, NW, NE, SW, SE, rnil, rcons } from './quilt';
 import { BadArgument } from './patterns';
 
 
 /** Returns the same square but flipped vertically. */
 export function sflip_vert(s: Square): Square {
-    return s;  // TODO: replace
+    switch (s.corner) {
+       case NW: return {shape: s.shape, color: s.color, corner: SW};
+       case NE: return {shape: s.shape, color: s.color, corner: SE};
+       case SW: return {shape: s.shape, color: s.color, corner: NW};
+       case SE: return {shape: s.shape, color: s.color, corner: NE};
+    }
 }
 
 /** Returns the same row but flipped vertically. */
 export function rflip_vert(r: Row): Row {
-    return r;  // TODO: replace
+    if (r === rnil) {
+        return rnil;
+    } else {
+        return rcons(sflip_vert(r.hd), rflip_vert(r.tl));
+    }
 }
 
 /** Returns the same quilt but flipped vertically. */
