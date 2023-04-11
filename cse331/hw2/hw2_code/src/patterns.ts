@@ -1,4 +1,4 @@
-import { Color, GREEN, NE, NW, Quilt, ROUND, Row, SE, STRAIGHT, SW, Square, qconcat, qcons, qnil, rcons, rnil } from './quilt';
+import { Color, GREEN, NE, NW, Quilt, ROUND, Row, SE, STRAIGHT, SW, Square, qcons, qnil, rcons, rnil } from './quilt';
 
 /** Thrown when a bad argument value is passed in. */
 export class BadArgument extends Error {
@@ -10,54 +10,101 @@ export class BadArgument extends Error {
 }
 
 /** Returns a quilt in pattern "A". */
-export function PatternA(color_op? : Color): Quilt {
-  const color : Color = (color_op === undefined) ? GREEN : color_op;
-  const square2 : Square = {shape: ROUND, color : color, corner : NW};
-  const row4 : Row = rcons(square2, rcons(square2, rnil));
-  return qcons(row4, qcons(row4, qcons(row4, qcons(row4, qnil))));
+export function PatternA(n: number, c? : Color): Quilt {
+  if (n < 0) {
+    throw new BadArgument("Bad n", "Expected n >= 0, but got n < 0");
+  }
+
+  const color : Color = (c === undefined) ? GREEN : c;
+  const s : Square = {shape: ROUND, color : color, corner : NW};
+  const s_s : Row = rcons(s, rcons(s, rnil));
+  
+  if (n === 0) {
+    return qnil;
+  } else {
+    return qcons(s_s, PatternA(n - 1, c));
+  }
 }
 
 /** Returns a quilt in pattern "B". */
-export function PatternB(color_op? : Color): Quilt {
-  const color : Color = (color_op === undefined) ? GREEN : color_op;
-  const square5 : Square = {shape: STRAIGHT, color : color, corner : SE};
-  const square6 : Square = {shape: STRAIGHT, color : color, corner : NW};
-  const row1 : Row = rcons(square5, rcons(square6, rnil));
-  return qcons(row1, qcons(row1, qcons(row1, qcons(row1, qnil))));
+export function PatternB(n : number, c? : Color): Quilt {
+  if (n < 0) {
+    throw new BadArgument("Bad n", "Expected n >= 0, but got n < 0");
+  }
+
+  const color : Color = (c === undefined) ? GREEN : c;
+  const s : Square = {shape: STRAIGHT, color : color, corner : SE};
+  const t : Square = {shape: STRAIGHT, color : color, corner : NW};
+  const s_t : Row = rcons(s, rcons(t, rnil));
+  
+  if (n === 0) {
+    return qnil;
+  } else {
+    return qcons(s_t, PatternB(n - 1, c));
+  }
 }
 
 /** Returns a quilt in pattern "C". */
-export function PatternC(color_op? : Color): Quilt {
-  const color : Color = (color_op === undefined) ? GREEN : color_op;
-  const square1 : Square = {shape: ROUND, color : color, corner : NE};
-  const square2 : Square = {shape: ROUND, color : color, corner : NW};
-  const square3 : Square = {shape: ROUND, color : color, corner : SE};
-  const square4 : Square = {shape: ROUND, color : color, corner : SW};
-  const row2 : Row = rcons(square1, rcons(square2, rnil));
-  const row3 : Row = rcons(square3, rcons(square4, rnil));
-  const quilt : Quilt = qcons(row3, qcons(row2, qnil));
-  return qconcat(qcons(row2, qnil), qconcat(quilt, qcons(row3, qnil)))
+export function PatternC(n : number, c? : Color): Quilt {
+  if (n < 0 || n % 2 !== 0) {
+    throw new BadArgument("Bad n", "Expected n >= 0 and n % 2 = 0, but got n < 0 or n % 2 != 0");
+  }
+
+  const color : Color = (c === undefined) ? GREEN : c;
+  const s : Square = {shape: ROUND, color : color, corner : NE};
+  const t : Square = {shape: ROUND, color : color, corner : NW};
+  const u : Square = {shape: ROUND, color : color, corner : SE};
+  const v : Square = {shape: ROUND, color : color, corner : SW};
+  const s_t : Row = rcons(s, rcons(t, rnil));
+  const u_v : Row = rcons(u, rcons(v, rnil));
+
+  if (n === 0) {
+    return qnil;
+  } else {
+    return qcons(s_t, qcons(u_v, PatternC(n - 2, c)));
+  }
 }
 
 /** Returns a quilt in pattern "D". */
-export function PatternD(color_op? : Color): Quilt {
-  const color : Color = (color_op === undefined) ? GREEN : color_op;
-  const square1 : Square = {shape: ROUND, color : color, corner : NE};
-  const square2 : Square = {shape: ROUND, color : color, corner : NW};
-  const square3 : Square = {shape: ROUND, color : color, corner : SE};
-  const square4 : Square = {shape: ROUND, color : color, corner : SW};
-  const row2 : Row = rcons(square1, rcons(square2, rnil));
-  const row3 : Row = rcons(square3, rcons(square4, rnil));
-  const quilt : Quilt = qcons(row3, qcons(row2, qnil));
-  return qconcat(quilt, quilt);
+export function PatternD(n : number, c? : Color): Quilt {
+  if (n < 0 || n % 2 !== 0) {
+    throw new BadArgument("Bad n", "Expected n >= 0 and n % 2 = 0, but got n < 0 or n % 2 != 0");
+  }
+
+  const color : Color = (c === undefined) ? GREEN : c;
+  const s : Square = {shape: ROUND, color : color, corner : SE};
+  const t : Square = {shape: ROUND, color : color, corner : SW};
+  const u : Square = {shape: ROUND, color : color, corner : NE};
+  const v : Square = {shape: ROUND, color : color, corner : NW};
+  const s_t : Row = rcons(s, rcons(t, rnil));
+  const u_v : Row = rcons(u, rcons(v, rnil));
+
+  if (n === 0){
+    return qnil;
+  } else {
+    return qcons(s_t, qcons(u_v, PatternD(n - 2, c)));
+  }
 }
 
 /** Returns a quilt in pattern "E". */
-export function PatternE(color_op? : Color): Quilt {
-  const color : Color = (color_op === undefined) ? GREEN : color_op;
-  const square5 : Square = {shape: STRAIGHT, color : color, corner : SE};
-  const square6 : Square = {shape: STRAIGHT, color : color, corner : NW};
-  const row1 : Row = rcons(square5, rcons(square6, rnil));
-  const row5 : Row = rcons(square6, rcons(square5, rnil));
-  return qcons(row5, qcons(row1, qcons(row5, qcons(row1, qnil))));
+export function PatternE(n : number, c? : Color): Quilt {
+  if (n < 0) {
+    throw new BadArgument("Bad n", "Expected n >= 0, but got n < 0");
+  }
+
+  const color : Color = (c === undefined) ? GREEN : c;
+  const s : Square = {shape: STRAIGHT, color : color, corner : NW};
+  const t : Square = {shape: STRAIGHT, color : color, corner : SE};
+  const u : Square = {shape: STRAIGHT, color : color, corner : SE};
+  const v : Square = {shape: STRAIGHT, color : color, corner : NW};
+  const s_t : Row = rcons(s, rcons(t, rnil));
+  const u_v : Row = rcons(u, rcons(v, rnil));
+
+  if (n === 0) {
+    return qnil;
+  } else if (n === 1) {
+    return qcons(s_t, qnil);
+  } else {
+    return qcons(s_t, qcons(u_v, PatternE(n - 2, c)));
+  }
 }
