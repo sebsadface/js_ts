@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 import { NW, GREEN, ROUND, Square, Row, rnil, rcons, qnil, qcons, RED, STRAIGHT, SE, SW, NE } from './quilt';
-import { PatternA, PatternB, PatternC, PatternD, BadArgument } from './patterns';
+import { PatternA, PatternB, PatternC, PatternD, PatternE, BadArgument } from './patterns';
 
 
 describe('patterns', function() {
@@ -12,8 +12,6 @@ describe('patterns', function() {
 
   const ne_round_green: Square = {shape: ROUND, color: GREEN, corner: NE};
   const ne_round_red: Square = {shape: ROUND, color: RED, corner: NE};
-  const ne_straight_green : Square = {shape: STRAIGHT, color : GREEN, corner : NE};
-  const ne_straight_red : Square = {shape: STRAIGHT, color : RED, corner : NE};
 
   const se_round_green: Square = {shape: ROUND, color: GREEN, corner: SE};
   const se_round_red: Square = {shape: ROUND, color: RED, corner: SE};
@@ -22,8 +20,6 @@ describe('patterns', function() {
 
   const sw_round_green: Square = {shape: ROUND, color: GREEN, corner: SW};
   const sw_round_red: Square = {shape: ROUND, color: RED, corner: SW};
-  const sw_straight_green : Square = {shape: STRAIGHT, color : GREEN, corner : SW};
-  const sw_straight_red : Square = {shape: STRAIGHT, color : RED, corner : SW};
 
   it('PatternA', function() {
     const row_green: Row = rcons(nw_round_green, rcons(nw_round_green, rnil));
@@ -56,10 +52,10 @@ describe('patterns', function() {
     const row_green: Row = rcons(se_straight_green, rcons(nw_straight_green, rnil));
     const row_red: Row = rcons(se_straight_red, rcons(nw_straight_red, rnil));
 
-    // Subdomain n < 0, bad argument test 1
+    // bad argument n < 0, test 1
     assert.throws(() => PatternB(-3, GREEN), BadArgument);
 
-    // Subdomain n < 0, bad argument test 2
+    // bad argument n < 0, test 2
     assert.throws(() => PatternB(-24, RED), BadArgument);
 
     // 0-1-many heuristic, base case
@@ -148,6 +144,39 @@ describe('patterns', function() {
 
   });
 
+  it('PatternE', function() {
+    const row_ns_green: Row = rcons(nw_straight_green, rcons(se_straight_green, rnil));
+    const row_ns_red: Row = rcons(nw_straight_red, rcons(se_straight_red, rnil));
+    const row_sn_green: Row = rcons(se_straight_green, rcons(nw_straight_green, rnil));
+    const row_sn_red: Row = rcons(se_straight_red, rcons(nw_straight_red, rnil));
 
+  // bad argument n < 0, test 1
+    assert.throws(() => PatternE(-4, GREEN), BadArgument);
 
+    // bad argument n < 0, test 2
+    assert.throws(() => PatternE(-13, RED), BadArgument);
+
+    // 0-1-many heuristic, base case 1
+    assert.deepEqual(PatternE(0), qnil);
+
+    // 0-1-many heuristic, base case 2
+    assert.deepEqual(PatternE(1), qcons(row_ns_green, qnil));
+
+    // 0-1-many heuristic, 1st 1 case, single recursive call calling base case 1
+    assert.deepEqual(PatternE(2, RED), qcons(row_ns_red, qcons(row_sn_red, qnil)));
+
+    // 0-1-many heuristic, 2nd 1 case, single recursive call calling base case 2
+    assert.deepEqual(PatternE(3, GREEN), 
+                     qcons(row_ns_green, qcons(row_sn_green, qcons(row_ns_green, qnil))));
+
+    // 0-1-many heuristic, 1st many case, >1 recursive call
+    assert.deepEqual(PatternE(4, RED),
+         qcons(row_ns_red, qcons(row_sn_red, qcons(row_ns_red, qcons(row_sn_red, qnil)))));
+
+    // 0-1-many heuristic, 2nd many case, >1 recursive call
+    assert.deepEqual(PatternE(5, GREEN),
+         qcons(row_ns_green, qcons(row_sn_green, qcons(row_ns_green, qcons(row_sn_green, 
+               qcons(row_ns_green, qnil))))));
+
+  });
 });
