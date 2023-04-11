@@ -26,7 +26,7 @@ export function qflip_vert(q: Quilt): Quilt {
     if (q === qnil) {
         return qnil;
     } else {
-        return qconcat(qflip_vert(q.tl), qcons(q.hd, qnil));
+        return qconcat(qflip_vert(q.tl), qcons(rflip_vert(q.hd), qnil));
     }
 }
 

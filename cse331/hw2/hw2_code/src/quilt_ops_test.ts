@@ -1,5 +1,5 @@
 import * as assert from 'assert';
-import { NW, NE, SW, SE, GREEN, ROUND, Square, rnil, rcons, qnil, qcons, Row, Quilt, qconcat } from './quilt';
+import { NW, NE, SW, SE, GREEN, ROUND, Square, rnil, rcons, qnil, qcons, Row, Quilt } from './quilt';
 import { rflip_vert, sew, sflip_vert, symmetrize, qflip_vert } from './quilt_ops';
 
 
@@ -83,7 +83,7 @@ describe('quilt_ops', function() {
                       qcons(rcons(sw_sq, rcons(ne_sq, rnil)) , qcons(rcons(nw_sq, rcons(se_sq, rnil)), 
                             qcons(rcons(se_sq, rcons(sw_sq, rnil)), qcons(rcons(ne_sq, rcons(nw_sq, rnil)), qnil)))));
   });
-  
+
   it('sflip_horz', function() {
     // TODO: implement
   });
