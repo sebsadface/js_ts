@@ -33,6 +33,5 @@ export function QuiltTableElems(props: {quilt: Quilt, key: number}): JsxList {
 }
 
 export function QuiltTableElem(props: {quilt: Quilt}): JSX.Element {
-  console.log(props); // TODO: remove
-  return <p>TODO: replace with a table</p>;
+  return <p>{jcompact(QuiltTableElems({quilt: props.quilt, key: 0}))}</p>;
 };
