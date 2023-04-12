@@ -4,6 +4,7 @@ import { Color, RED, GREEN, Quilt } from './quilt';
 import { PatternA, PatternB, PatternC, PatternD, PatternE } from './patterns';
 import { QuiltElem } from './quilt_draw';
 import { symmetrize } from './quilt_ops';
+import { QuiltTableElem } from './quilt_draw_table';
 
 
 // Returns the pattern number, which must be A-E, or undefined if it was not
@@ -82,9 +83,13 @@ if (pattern === undefined) {
 
   // Display the result of the function.
   const root = createRoot(document.getElementById('main')!);
+  const tab = params.has("table");
   if (result instanceof Error) {
     root.render(<p><b>Error</b>: {result.message}</p>);
   } else {
+    tab ?
+    root.render(
+      <React.StrictMode><QuiltTableElem quilt={result}/></React.StrictMode>) :
     root.render(
       <React.StrictMode><QuiltElem quilt={result}/></React.StrictMode>);
   }

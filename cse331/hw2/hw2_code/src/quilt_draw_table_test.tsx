@@ -2,7 +2,7 @@
 import * as assert from 'assert';
 import * as React from 'react';
 import { NW, NE, GREEN, RED, STRAIGHT, ROUND, Square, rnil, rcons, SW, SE, Row, qnil, Quilt,qcons } from './quilt';
-import { SquareTableElem, RowTableElem, RowTableElems, QuiltTableElems} from './quilt_draw_table';
+import { SquareTableElem, RowTableElem, RowTableElems, QuiltTableElems, QuiltTableElem} from './quilt_draw_table';
 import { jcons, jnil } from './jsx_list';
 
 
@@ -153,38 +153,49 @@ describe('quilt_draw_table', function() {
     const q2 : Quilt = qcons(u, qcons(v, qcons(w, qcons(x, qnil))));
 
     // straight-line code heuristic, 1st test
-        assert.deepEqual(QuiltTableElems({quilt: q1, key: 0}), 
-                      <p>{[<tr key={0}>{[
-                              <td key={0} className={"sq-red"}>SE</td>,
-                              <td key={1} className={"sq-red"}>SW</td>,
-                            ]}</tr>, 
-                      <tr key={1}>{[
-                              <td key={0} className={"sq-green"}>NE</td>,
-                              <td key={1} className={"sq-green"}>NW</td>,
-                            ]}</tr>, 
-                      <tr key={2}>{[
-                              <td key={0} className={"sq-red"}>SW</td>,
-                              <td key={1} className={"sq-green"}>NE</td>,
-                            ]}</tr>]}</p>);
+        assert.deepEqual(QuiltTableElem({quilt: q1}), 
+                      <table><tbody>{[
+                        <tr key={0}>{[
+                                <td key={0} className={"sq-red"}>SE</td>,
+                                <td key={1} className={"sq-red"}>SW</td>,
+                        ]}</tr>, 
+
+                        <tr key={1}>{[
+                                <td key={0} className={"sq-green"}>NE</td>,
+                                <td key={1} className={"sq-green"}>NW</td>,
+                        ]}</tr>, 
+
+                        <tr key={2}>{[
+                                <td key={0} className={"sq-red"}>SW</td>,
+                                <td key={1} className={"sq-green"}>NE</td>,
+                        ]}</tr>,
+
+                      ]}</tbody></table>);
   
     // straight-line code heuristic, 2nd test
-    assert.deepEqual(QuiltTableElems({quilt: q2, key: 1}), 
-                      <p>{[<tr key={1}>{[
-                              <td key={0} className={"sq-red"}>SE</td>,
-                              <td key={1} className={"sq-red"}>SW</td>,
-                            ]}</tr>, 
-                      <tr key={2}>{[
-                              <td key={0} className={"sq-green"}>NE</td>,
-                              <td key={1} className={"sq-green"}>NW</td>,
-                            ]}</tr>, 
-                      <tr key={3}>{[
-                              <td key={0} className={"sq-red"}>SW</td>,
-                              <td key={1} className={"sq-green"}>NE</td>,
-                            ]}</tr>, 
-                      <tr key={4}>{[
-                              <td key={0} className={"sq-green"}>NW</td>,
-                              <td key={1} className={"sq-red"}>SE</td>,
-                            ]}</tr>]}</p>);
+    assert.deepEqual(QuiltTableElem({quilt: q2}), 
+                      <table><tbody>{[
+                        <tr key={0}>{[
+                                <td key={0} className={"sq-red"}>SE</td>,
+                                <td key={1} className={"sq-red"}>SW</td>,
+                        ]}</tr>, 
+
+                        <tr key={1}>{[
+                                <td key={0} className={"sq-green"}>NE</td>,
+                                <td key={1} className={"sq-green"}>NW</td>,
+                        ]}</tr>, 
+
+                        <tr key={2}>{[
+                                <td key={0} className={"sq-red"}>SW</td>,
+                                <td key={1} className={"sq-green"}>NE</td>,
+                        ]}</tr>, 
+
+                        <tr key={3}>{[
+                                <td key={0} className={"sq-green"}>NW</td>,
+                                <td key={1} className={"sq-red"}>SE</td>,
+                        ]}</tr>,
+
+                      ]}</tbody></table>);
 
   });
 

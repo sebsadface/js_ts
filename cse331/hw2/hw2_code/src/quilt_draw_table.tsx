@@ -33,5 +33,7 @@ export function QuiltTableElems(props: {quilt: Quilt, key: number}): JsxList {
 }
 
 export function QuiltTableElem(props: {quilt: Quilt}): JSX.Element {
-  return <p>{jcompact(QuiltTableElems({quilt: props.quilt, key: 0}))}</p>;
+  return (<table><tbody>
+    {jcompact(QuiltTableElems({quilt: props.quilt, key: 0}))}
+    </tbody></table>);
 };
