@@ -33,17 +33,30 @@ export function qflip_vert(q: Quilt): Quilt {
 
 /** Returns the same square but flipped horizontally. */
 export function sflip_horz(s: Square): Square {
-    return s;  // TODO: replace
+    switch (s.corner) {
+       case NW: return {shape: s.shape, color: s.color, corner: NE};
+       case NE: return {shape: s.shape, color: s.color, corner: NW};
+       case SW: return {shape: s.shape, color: s.color, corner: SE};
+       case SE: return {shape: s.shape, color: s.color, corner: SW};
+    }
 }
 
 /** Returns the same row but flipped horizontally. */
 export function rflip_horz(r: Row): Row {
-    return r;  // TODO: replace
+    if (r === rnil) {
+        return rnil;
+    } else {
+        return rconcat(rflip_horz(r.tl), rcons(sflip_horz(r.hd), rnil));
+    }
 }
 
 /** Returns the same quilt but flipped horizontally. */
 export function qflip_horz(q: Quilt): Quilt {
-    return q;  // TODO: replace
+    if (q === qnil) {
+        return qnil;
+    } else {
+        return qcons(rflip_horz(q.hd), qflip_horz(q.tl));
+    }
 }
 
 

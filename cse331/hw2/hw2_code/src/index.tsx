@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { Color, RED, GREEN, Quilt } from './quilt';
 import { PatternA, PatternB, PatternC, PatternD, PatternE } from './patterns';
 import { QuiltElem } from './quilt_draw';
+import { symmetrize } from './quilt_ops';
 
 
 // Returns the pattern number, which must be A-E, or undefined if it was not
@@ -57,17 +58,18 @@ GetRows(params);   // not used yet
 
 // Invoke the function for the pattern given in the query params.
 const pattern = GetPattern(params);
+const sym = params.has("symmetrize");
 if (pattern === undefined) {
   window.location.href = "/?pattern=A";
 } else {
   let result: Quilt | Error = new Error('unknown error');
   try {
     switch (pattern) {
-      case "A": result = PatternA(GetRows(params), GetColor(params)); break;
-      case "B": result = PatternB(GetRows(params), GetColor(params)); break;
-      case "C": result = PatternC(GetRows(params), GetColor(params)); break;
-      case "D": result = PatternD(GetRows(params), GetColor(params)); break;
-      case "E": result = PatternE(GetRows(params), GetColor(params)); break;
+      case "A": result = sym? symmetrize(PatternA(GetRows(params), GetColor(params))) : PatternA(GetRows(params), GetColor(params)); break;
+      case "B": result = sym? symmetrize(PatternB(GetRows(params), GetColor(params))) : PatternB(GetRows(params), GetColor(params)); break;
+      case "C": result = sym? symmetrize(PatternC(GetRows(params), GetColor(params))) : PatternC(GetRows(params), GetColor(params)); break;
+      case "D": result = sym? symmetrize(PatternD(GetRows(params), GetColor(params))) : PatternD(GetRows(params), GetColor(params)); break;
+      case "E": result = sym? symmetrize(PatternE(GetRows(params), GetColor(params))) : PatternE(GetRows(params), GetColor(params)); break;
       default:  throw new Error('impossible');
     }
   } catch (e) {
