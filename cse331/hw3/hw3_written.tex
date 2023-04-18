@@ -181,8 +181,15 @@
 \begin{question}{1. Apple Cipher (13 points)}
    \begin{part}
         \begin{answer}
+            \begin{align*}
+                \textbf{func\;\;} &cipher\_encode(nil) &&:= nil \\
+                &cipher\_encode(cons(c, L_c)) &&:= cons(nc(c), cipher\_encode(L_c)) \tag{for any $c : Character$ and $L_c : List_c$}  
+            \end{align*}
 
-
+            \begin{align*}
+                \textbf{func\;\;} &cipher\_decode(nil) &&:= nil \\
+                &cipher\_decode(cons(c, L_c)) &&:= cons(pc(c), cipher\_decode(L_c)) \tag{for any $c : Character$ and $L_c : List_c$}  
+            \end{align*}
         \end{answer}
     \end{part}
 \end{question}
@@ -191,8 +198,25 @@
 \begin{question}{2. Whoopsie-Crazy (13 points)}
     \begin{part}
         \begin{answer}
+            \begin{align*}
+                \textbf{func\;\;} &crazy\_caps\_encode(nil) &&:= nil \\
+                &crazy\_caps\_encode(cons(c, L_c)) &&:= cons(up(c), crazy\_caps\_encode\_helper(L_c)) \tag{for any $c : Character$ and $L_c : List_c$}  \\
+            \end{align*}
 
+            \begin{align*}
+                \textbf{func\;\;} &crazy\_caps\_encode\_helper(nil) &&:= nil \\
+                &crazy\_caps\_encode\_helper(cons(c, L_c)) &&:= cons(c, crazy\_caps\_encode(L_c)) \tag{for any $c : Character$ and $L_c : List_c$}  \\
+            \end{align*}
 
+            \begin{align*}
+                \textbf{func\;\;} &crazy\_caps\_decode(nil) &&:= nil \\
+                &crazy\_caps\_decode(cons(c, L_c)) &&:= cons(lc(c), crazy\_caps\_decode\_helper(L_c)) \tag{for any $c : Character$ and $L_c : List_c$}  
+            \end{align*}
+
+            \begin{align*}
+                \textbf{func\;\;} &crazy\_caps\_decode\_helper(nil) &&:= nil \\
+                &crazy\_caps\_decode\_helper(cons(c, L_c)) &&:= cons(c, crazy\_caps\_decode(L_c)) \tag{for any $c : Character$ and $L_c : List_c$}  \\
+            \end{align*}
         \end{answer}
     \end{part}
 \end{question}
