@@ -171,3 +171,51 @@ export function pig_latin_decode(L: List<number>): List<number> {
         return L;
     }
 }
+
+export function cipher_encode(L: List<number>): List<number> {
+    if (L === nil) {
+        return nil;
+    } else {
+        return cons(next_latin_char(L.hd), cipher_encode(L.tl));
+    }
+}
+
+export function cipher_decode(L: List<number>): List<number> {
+    if (L === nil) {
+        return nil;
+    } else {
+        return cons(prev_latin_char(L.hd), cipher_decode(L.tl));
+    }
+}
+
+export function crazy_caps_encode(L: List<number>): List<number> {
+    if (L === nil) {
+        return nil;
+    } else {
+        return cons(String.fromCharCode(L.hd).toUpperCase().charCodeAt(0), crazy_caps_encode_helper(L.tl));
+    }
+}
+
+function crazy_caps_encode_helper(L: List<number>): List<number> {
+    if (L === nil) {
+        return nil;
+    } else {
+        return cons(L.hd, crazy_caps_encode(L.tl));
+    }
+}
+
+export function crazy_caps_decode(L: List<number>): List<number> {
+    if (L === nil) {
+        return nil;
+    } else {
+        return cons(String.fromCharCode(L.hd).toLowerCase().charCodeAt(0), crazy_caps_decode_helper(L.tl));
+    }
+}
+
+function crazy_caps_decode_helper(L: List<number>): List<number> {
+    if (L === nil) {
+        return nil;
+    } else {
+        return cons(L.hd, crazy_caps_decode(L.tl));
+    }
+}
