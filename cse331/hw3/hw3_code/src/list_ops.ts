@@ -1,4 +1,4 @@
-import { List, nil } from './list';
+import { List, nil, cons } from './list';
 
 
 /** Returns the last element in the given list. */
@@ -15,13 +15,23 @@ export function last(L: List<number>): number {
 
 /** Returns the prefix consting of the first n elements of L. */
 export function prefix<A>(n: number, L: List<A>): List<A> {
-  n;  // TODO: remove this (just making the compiler happy)
-  return L;  // TODO: replace
-}
+    if (n < 0 || (n > 0 && L === nil)) {
+        throw new Error("Invalid inputs. Expecting n >= len(L)");
+    } else if (n === 0 || L === nil) {
+        return nil;
+    } else {
+        return cons(L.hd, prefix(n - 1, L.tl));
+    }
+} 
 
 
 /** Returns the suffix consting of the elements of L after the first n. */
 export function suffix<A>(n: number, L: List<A>): List<A> {
-  n;  // TODO: remove this (just making the compiler happy)
-  return L;  // TODO: replace
+    if (n < 0 || (n > 0 && L === nil)) {
+        throw new Error("Invalid inputs. Expecting n >= len(L)");
+    } else if (n === 0 || L === nil) {
+        return L;
+    } else {
+        return suffix(n - 1, L.tl);
+    }
 }

@@ -1,4 +1,5 @@
-import { List, nil, cons, concat, len } from './list';
+import { explode, compact } from './char_list';
+import { List, nil, cons, concat, len, rev } from './list';
 import { last, prefix, suffix } from './list_ops'
 
 
@@ -123,12 +124,18 @@ export function pig_latin_encode(L: List<number>): List<number> {
     // NOTE: this is incomplete. See Problem 6 for how to do this better.
     // TODO: If you do Problem 6, you can delete all this code.
     const n = count_consonants(L);
-    if (n === undefined || n === 0) {
+    if (n === -1 || n === undefined) {
         return L;
+    } else if (n === 0) {
+        return concat(L, explode("way"));
+    } else if (n >= 1 && 
+               last(prefix(n,L)) === "q".charCodeAt(0) && 
+               compact(prefix(1, suffix(n, L))) === "u" && 
+               count_consonants(suffix(1, suffix(n, L))) === 0) {
+
+        return concat(suffix(n + 1, L), concat(prefix(n + 1, L), AY));
     } else {
-        const p = prefix(n, L);
-        const r = suffix(n, L);
-        return concat(r, concat(p, AY));
+        return concat(suffix(n, L), concat(prefix(n, L), AY));
     }
 }
 
@@ -139,36 +146,27 @@ export function pig_latin_encode(L: List<number>): List<number> {
  */
 export function pig_latin_decode(L: List<number>): List<number> {
     // NOTE: this is incomplete. See Problem 6 for how to do this better.
-    // TODO: If you do Problem 6, you can delete all this code.
-    const m = len(L);
-    if (m < 4) {
+    if (len(L) < 3) {
         return L;
+    }
+
+    const revl: List<number> = rev(L);
+    const num = count_consonants(suffix(2, revl));
+    if (compact(prefix(2, revl)) !== "ya") {
+        return L;
+    } else if (count_consonants(suffix(2, revl)) === undefined || 
+               count_consonants(suffix(2, revl)) === -1 ||
+               count_consonants(suffix(2, revl)) === 0 ||
+               num === undefined) {
+        return L;
+    } else if (compact(prefix(3, revl)) === "yaw" && count_consonants(suffix(3, revl)) === 0) {
+        return prefix(len(L) - 3, L);
+    } else if (compact(prefix(4, revl)) === "yauq") {
+        return concat(explode("qu"), prefix(len(L) - 4, L));
     } else {
-        const lastCh = last(L);
-        const last2Ch = last(prefix(m - 1, L));  // second to last
-        const last3Ch = last(prefix(m - 2, L));  // third to last
-        if (lastCh !== "y".charCodeAt(0) || last2Ch !== "a".charCodeAt(0) ||
-            !is_latin_consonant(last3Ch)) {
-            return L;  // not pig latin
-        }
-
-        const allButLast3 = prefix(m - 3, L);
-        if (!is_latin_consonant(last(allButLast3))) {
-          // move one consonant before "ay" to the front
-          return cons(last3Ch, allButLast3);
-        } else if (m < 5) {
-          return L; // not pig latin
-        }
-
-        const last4Ch = last(allButLast3);
-        const allButLast4 = prefix(m - 4, L);
-        if (!is_latin_consonant(last(allButLast4))) {
-          // move two consonants before "ay" to the front
-          return cons(last4Ch, cons(last3Ch, allButLast4));
-        }
-
-        // Giving up here. There has to be a better way to do this...
-        return L;
+        const withoutay : List<number> = rev(suffix(2, revl));
+        const consonants: List<number> = suffix(len(withoutay) - num, withoutay);
+        return concat(consonants, prefix(len(withoutay) - num, withoutay));
     }
 }
 

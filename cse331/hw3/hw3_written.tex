@@ -183,7 +183,7 @@
         \begin{answer}
             \begin{align*}
                 \textbf{func\;\;} &cipher\_encode(nil) &&:= nil \\
-                &cipher\_encode(cons(c, L_c)) &&:= cons(nc(c), cipher\_encode(L_c)) \tag{for any $c : Character$ and $L_c : List_c$}  
+                & cipher\_encode(cons(c, L_c)) &&:= cons(nc(c), cipher\_encode(L_c)) \tag{for any $c : Character$ and $L_c : List_c$}  
             \end{align*}
 
             \begin{align*}
@@ -200,12 +200,12 @@
         \begin{answer}
             \begin{align*}
                 \textbf{func\;\;} &crazy\_caps\_encode(nil) &&:= nil \\
-                &crazy\_caps\_encode(cons(c, L_c)) &&:= cons(up(c), crazy\_caps\_encode\_helper(L_c)) \tag{for any $c : Character$ and $L_c : List_c$}  \\
+                &crazy\_caps\_encode(cons(c, L_c)) &&:= cons(up(c), crazy\_caps\_encode\_helper(L_c)) \tag{for any $c : Character$ and $L_c : List_c$}
             \end{align*}
 
             \begin{align*}
                 \textbf{func\;\;} &crazy\_caps\_encode\_helper(nil) &&:= nil \\
-                &crazy\_caps\_encode\_helper(cons(c, L_c)) &&:= cons(c, crazy\_caps\_encode(L_c)) \tag{for any $c : Character$ and $L_c : List_c$}  \\
+                &crazy\_caps\_encode\_helper(cons(c, L_c)) &&:= cons(c, crazy\_caps\_encode(L_c)) \tag{for any $c : Character$ and $L_c : List_c$}  
             \end{align*}
 
             \begin{align*}
@@ -215,7 +215,7 @@
 
             \begin{align*}
                 \textbf{func\;\;} &crazy\_caps\_decode\_helper(nil) &&:= nil \\
-                &crazy\_caps\_decode\_helper(cons(c, L_c)) &&:= cons(c, crazy\_caps\_decode(L_c)) \tag{for any $c : Character$ and $L_c : List_c$}  \\
+                &crazy\_caps\_decode\_helper(cons(c, L_c)) &&:= cons(c, crazy\_caps\_decode(L_c)) \tag{for any $c : Character$ and $L_c : List_c$} 
             \end{align*}
         \end{answer}
     \end{part}
@@ -225,15 +225,33 @@
 \begin{question}{3. Have Your Take and Eat It Too (15 points)}
     \begin{part}
         \begin{answer}
+            Let $P(S)$ be the claim "$take(echo(S)) = S for any S : List$". \\
+            We show $P(S)$ holds for any list $L \in S$ by structural induction.\\
+            \textbf{Base Case (S = nil):} 
+            \begin{align*}
+                take(echo(nil)) &= take(nil) \tag{Def of $echo$} \\
+                &= nil \tag{Def of $take$}
+            \end{align*}
+            \textbf{Inductive Hypothesis:} Suppose $P(L)$ holds for a list $L$ \\
+            \textbf{Inductive Step ($P(cons(a, L))$):} Let $a$ be an arbitrary integer.
+            \begin{align*}
+                take(echo(cons(a, L))) &= take(cons(a, cons(a, echo(L)))) \tag{Def of $echo$}\\
+                &= cons(a, skip(cons(a, echo(L)))) \tag{Def of $take$} \\
+                &= cons(a, take(echo(L))) \tag{Def of $skip$}\\
+                &= cons(a, L) \tag{Inductive Hypothesis}
+            \end{align*}
 
-
+            \textbf{Conclusion:} Therefore, $P(S)$ holds for any list $S$ by the principle of induction.
         \end{answer}
     \end{part}
 
     \begin{part}
         \begin{answer}
-
-
+            \begin{align*}
+                take(cons(1, cons(2, echo(L)))) &= cons(1, skip(cons(2, echo(L)))) \tag{Def of $take$}\\
+                &= cons(1, take(echo(L))) \tag{Def of $skip$} \\
+                &= cons(1, L) \tag{From part(a): $take(echo(S))=S$} 
+            \end{align*}
         \end{answer}
     \end{part}
 \end{question}
@@ -242,8 +260,17 @@
 \begin{question}{4. Five, Fix, Seven, Eight (14 points)}
     \begin{part}
         \begin{answer}
+            \begin{align*}
+                \textbf{func\;\;} &prefix(n, L) &&:= undefined \tag{if $n > len(L)$ } \\
+                &prefix(0, L) &&:= nil \tag{for any $L : List$} \\
+                &prefix(n + 1, cons(x, L)) &&:= cons(x, prefix(n, L)) \tag{for any $n : \mathbb{N}$, $x : \mathbb{Z}$, and $L : List$}
+            \end{align*}
 
-
+            \begin{align*}
+                \textbf{func\;\;} &suffix(n, L) &&:= undefined \tag{if $n > len(L)$ } \\
+                &suffix(0, L) &&:= L \tag{for any $L : List$} \\
+                &suffix(n + 1, cons(x, L)) &&:= suffix(n, L) \tag{for any $n : \mathbb{N}$, $x : \mathbb{Z}$, and $L : List$}
+            \end{align*}
         \end{answer}
     \end{part}
 \end{question}
@@ -252,21 +279,52 @@
 \begin{question}{5. Living in the Last (25 points)}
     \begin{part}
         \begin{answer}
-
-
+            Let $L$ be an arbitrary List.\\
+            By the definition of List, we divide into two cases.\\
+            \textbf{Case 1: } $L = nil$. 
+            \begin{align*}
+                concat(L, cons(b, nil)) &= concat(nil, cons(b, nil)) \tag{Def of $L$}\\
+                &= cons(b, nil) \tag{Def of $concat$} \\
+                &\ne nil \tag{Since $b : \mathbb{Z}$, Def of $cons$}
+            \end{align*}
+            \textbf{Case 2: } $L = cons(a, R)$ for some $a : \mathbb{Z}$ and $R : List$
+            \begin{align*}
+                concat(L, cons(b, nil)) &= concat(cons(a, R), cons(b, nil)) \tag{Def of $L$}\\
+                &= cons(a, concat(R, cons(b, nil))) \tag{Def of $concat$} \\
+                &\ne nil \tag{Since $a : \mathbb{Z}$,  Def of $cons$}
+            \end{align*}
+            In either case, $concat(L, cons(b, nil)) \ne nil$. Since an arbitrary $L$ is a List, by the definition of List, we know the claim $concat(L, cons(b, nil))$ holds for all Lists.
         \end{answer}
     \end{part}
 
     \begin{part}
         \begin{answer}
+            Let $P(S)$ be the claim "$last(concat(S, cons(b, nil))) = b for any b : \mathbb{Z} and any S: List$". \\
+            We show $P(S)$ holds for any list $L \in S$ by structural induction.\\
+            \textbf{Base Case (S = nil):} 
+            \begin{align*}
+                last(concat(nil, cons(b, nil))) &= last(cons(b, nil)) \tag{Def of $concat$} \\
+                &= b \tag{Def of $last$}
+            \end{align*}
+            \textbf{Inductive Hypothesis:} Suppose $P(L)$ holds for a list $L$ \\
+            \textbf{Inductive Step ($P(cons(a, L))$):} Let $a$ be an arbitrary integer.
+            \begin{align*}
+                last(concat(cons(a, L), cons(b, nil))) &= last(cons(a, concat(L, cons(b, nil)))) \tag{Def of $concat$}\\
+                &= last(concat(L, cons(b, nil))) \tag{Def of $last$, and $concat(L, cons(b, nil)) \ne nil$ from part(a)} \\ \\
+                &= b \tag{Inductive Hypothesis}
+            \end{align*}
 
+            \textbf{Conclusion:} Therefore, $P(S)$ holds for any list $S$ by the principle of induction.
 
         \end{answer}
     \end{part}
-
+\newpage
     \begin{part}
         \begin{answer}
-
+            \begin{align*}
+                last(rev(cons(a, R))) &= last(concat(rev(R), cons(a, nil))) \tag{Def of rev} \\
+                &= a \tag{$last(concat(S, cons(b, nil))) = b$ from part(b)}
+            \end{align*}
 
         \end{answer}
     \end{part}
@@ -276,15 +334,28 @@
 \begin{question}{6. Extra Credit: Vowel Movement (0 points)}
     \begin{part}
         \begin{answer}
-
+            \begin{align*}
+                \textbf{func\;\;} 
+                &pig\_latin\_encode(L) := L \tag{for any $L : List$ where $cc(L) = -1$ or $cc(L) =$ undefined} \\
+                &pig\_latin\_encode(L) := concat(L, explode("way")) \tag{for any $L : List$ where $cc(L) = 0$}\\\\
+                &pig\_latin\_encode(L) := concat(suffix(cc(L), L), concat(prefix(cc(L), L), explode("ay"))) \\ &\text{(for any $L : List$ where $cc(L) \ge 1$ and $last(prefix(cc(L), L)) \ne char("q")$ or} \\ &\text{$ hd(suffix(cc(L), L)) \ne char("u")$ or $cc(suffix(1, suffix(cc(L)), L) \ne 0)$}\\\\
+                &pig\_latin\_encode(L) := concat(suffix(cc(L) + 1, L), concat(prefix(cc(L) + 1, L), explode("ay"))) \\ &\text{(for any $L : List$ where $cc(L) \ge 1$ and $last(prefix(cc(L), L)) = char("q")$ and} \\ &\text{$ hd(suffix(cc(L), L)) = char("u")$ and $cc(suffix(1, suffix(cc(L)), L) = 0)$}
+            \end{align*}
 
         \end{answer}
     \end{part}
 
     \begin{part}[d]
         \begin{answer}
-
-
+            \begin{align*}
+                \textbf{func\;\;} 
+                &pig\_latin\_encode(L) := L \tag{for any $L : List$ where $compact(prefix(2, rev(L))) \ne "ya"$} \\\\
+                &pig\_latin\_encode(L) := L  \tag{for any $L : List$ where $cc(suffix(2, rev(L))) \le 0$} \\\\
+                &pig\_latin\_encode(L) := prefix(len(L) - 3, L) \tag{for any $L : List$ where $compact(prefix(3, rev(L))) = "yaw"$ and $cc(suffix(3, rev(L))) = 0$} \\\\ 
+                &pig\_latin\_encode(L) := concat(explode("qu"), prefix(len(L) - 4, L)) \tag{for any $L : List$ where $compact(prefix(4, rev(L))) = "yauq"$}\\\\
+                &pig\_latin\_encode(L) := concat(prefix(len(suffix(len(L) - cc(suffix(2, rev(L))) + 2, L)) - 2, \\ 
+                &suffix(len(L) - cc(suffix(2, rev(L))) + 2, L)), prefix(len(L) - cc(suffix(2, rev(L))) + 2, L)) \tag{for any $L : List$ where previous two cases do not apply and $cc(suffix(2, rev(L))) \ge 1$}
+            \end{align*}
         \end{answer}
     \end{part}
 \end{question}
@@ -292,7 +363,28 @@
 %%%%%%%%%%%%%%%%%%%%%%%% Question# 7 %%%%%%%%%%%%%%%%%%%%%%%%
 \begin{question}{8. Extra Credit: Roll the Twice (0 points)}
     \begin{answer}
-        
+        Proof for $skip(twice\_odds(L)) = twice(take(L))$
+
+
+        Let $P(S)$ be the claim "$take(twice\_evens(S)) = twice(take(S))$ for any S: List". \\
+            We show $P(S)$ holds for any list $L \in S$ by structural induction.\\
+            \textbf{Base Case (S = nil):} 
+            \begin{align*}
+               take(twice\_evens(nil)) &= take(nil) \tag{Def of $twice\_evens$} \\
+                &= nil \tag{Def of $take$} \\
+                &= take(nil) \tag{Def of $takes$} \\
+                &= twice(take(nil)) \tag{Def of $twice$ and since $take(nil) = nil$}
+            \end{align*}
+            \textbf{Inductive Hypothesis:} Suppose $P(L)$ holds for a list $L$ \\
+            \textbf{Inductive Step ($P(cons(a, L))$):} Let $a$ be an arbitrary integer.
+            \begin{align*}
+                take(twice\_evens(cons(a, L))) &= take(cons(2a, twice\_odds(L))) \tag{Def of $twice\_evens$}\\
+                &= cons(2a, skip(twice\_odds(L))) \tag{Def of $take$} \\
+                &= cons(2a, twice(skip(L))) \\
+                &= twice(cons(a, skip(L))) \\
+                &= twice(take(cons(a, L)))
+            \end{align*}
+            \textbf{Conclusion:} Therefore, $P(S)$ holds for any list $S$ by the principle of induction.
     \end{answer}
     
 \end{question}
