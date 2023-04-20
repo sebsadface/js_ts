@@ -154,11 +154,16 @@ export function pig_latin_decode(L: List<number>): List<number> {
     const num = count_consonants(suffix(2, revl));
     if (compact(prefix(2, revl)) !== "ya") {
         return L;
-    } else if (compact(prefix(4, revl)) === "yauq") {
-        return concat(explode("qu"), prefix(len(L) - 4, L));
     } else if (compact(prefix(3, revl)) === "yaw" && count_consonants(suffix(3, revl)) === 0) {
         return prefix(len(L) - 3, L);
-    }else if (count_consonants(suffix(2, revl)) === undefined || 
+    } else if (len(L) >= 4 && compact(prefix(4, revl)) === "yauq") {
+        const consnants = count_consonants(suffix(4, revl));
+        if (consnants !== undefined && consnants > 0) {
+            return concat(rev(suffix(2, rev(suffix(len(L) - 4 - consnants, L)))),prefix(len(L) - 4 - consnants, L))
+        } else {
+            return concat(explode("qu"), prefix(len(L) - 4, L));
+        }
+    } else if (count_consonants(suffix(2, revl)) === undefined || 
                count_consonants(suffix(2, revl)) === -1 ||
                count_consonants(suffix(2, revl)) === 0 ||
                num === undefined) {
