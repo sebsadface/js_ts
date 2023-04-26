@@ -181,19 +181,30 @@
 \begin{question}{2. Not My Cup of Tree (20 points)}
     \begin{part}
         \begin{answer}
-        
+            \begin{align*}
+                values(makeBst(nil)) &= values(empty) \tag{Def of $makeBst$} \\
+                &= nil \tag{Def of $values$}
+            \end{align*}
         \end{answer}
     \end{part}
 
     \begin{part}
         \begin{answer}
-        
+            Let $(P,S) = split(m, cons(a,L))$, $m = \lfloor len(cons(a,L))/2 \rfloor$, and $S = cons(b, R)$
+            \begin{align*}
+                values(makeBst(cons(a, L))) &= values(node(b, makeBst(P), makeBst(R))) \tag{Def of $makeBst$} \\
+                &= concat(values(makeBst(P)), cons(b, values(makeBst(R)))) \tag{Def of $values$} \\
+                &= concat(P, cons(b, values(makeBst(R)))) \tag{Inductive Hypothesis on $U = P$} \\
+                &= concat(P, cons(b, R)) \tag{Inductive Hypothesis on $U = R$} \\
+                &= concat(P, S) \tag{Since $S = cons(b, R)$} \\
+                &= cons(a, L) \tag{Lemma 1, and since $(P,S) = split(m, cons(a,L))$}
+            \end{align*}
         \end{answer}
     \end{part}
 
     \begin{part}
         \begin{answer}
-        
+            
         \end{answer}
     \end{part}
 
