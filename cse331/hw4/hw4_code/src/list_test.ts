@@ -1,5 +1,5 @@
 import * as assert from 'assert';
-import { nil, cons, len, split, compact_list, explode_array } from './list';
+import { nil, cons, len, split, compact_list, explode_array, split_at } from './list';
 import { explode } from './char_list';
 
 
@@ -32,6 +32,43 @@ describe('list', function() {
   
   it('split_at', function() {
     // TODO: add tests
+
+    // 0-1-many heuristic, 1st base case test L = nil
+    assert.deepEqual(split_at(explode(""), 0), [nil, nil]);
+
+     // 0-1-many heuristic, 2nd base case test L = nil
+    assert.deepEqual(split_at(explode(""), 12), [nil, nil]);
+
+    // 0-1-many heuristic, 1st base case test L.hd = c
+    assert.deepEqual(split_at(explode("a"), "a".charCodeAt(0)), [nil, explode("a")]);
+
+    // 0-1-many heuristic, 2nd base case test L.hd = c
+    assert.deepEqual(split_at(explode("stray"), "s".charCodeAt(0)), [nil, explode("stray")]);
+
+    // 0-1-many heuristic, 1st 1 case, single recursive call calling branch L = nil
+    assert.deepEqual(split_at(explode("a"), "b".charCodeAt(0)), [explode("a"), nil]);
+
+    // 0-1-many heuristic, 2nd 1 case, single recursive call calling branch L = nil
+    assert.deepEqual(split_at(explode("s"), "d".charCodeAt(0)), [explode("s"), nil]);
+
+    // 0-1-many heuristic, 1st 1 case, single recursive call calling branch L.hd = c
+    assert.deepEqual(split_at(explode("stray"), "t".charCodeAt(0)), [explode("s"), explode("tray")]);
+
+    // 0-1-many heuristic, 2nd 1 case, single recursive call calling branch L.hd = c
+    assert.deepEqual(split_at(explode("tray"), "r".charCodeAt(0)), [explode("t"), explode("ray")]);
+
+    // 0-1-many heuristic, 1st many case, multiple recursive calls calling branch L = nil
+    assert.deepEqual(split_at(explode("stray"), "b".charCodeAt(0)), [explode("stray"), nil]);
+
+    // 0-1-many heuristic, 2nd many case, multiple recursive calls calling branch L = nil
+    assert.deepEqual(split_at(explode("pretty"), "d".charCodeAt(0)), [explode("pretty"), nil]);
+
+    // 0-1-many heuristic, 1st many case, multiple recursive calls calling branch L.hd = c
+    assert.deepEqual(split_at(explode("stray"), "r".charCodeAt(0)), [explode("st"), explode("ray")]);
+
+    // 0-1-many heuristic, 2nd many case, multiple recursive calls calling branch L.hd = c
+    assert.deepEqual(split_at(explode("pretty"), "t".charCodeAt(0)), [explode("pre"), explode("tty")]);
+
   });
 
   it('compact_list', function() {

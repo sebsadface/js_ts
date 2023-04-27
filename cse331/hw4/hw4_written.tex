@@ -202,25 +202,62 @@
         \end{answer}
     \end{part}
 
-    \begin{part}
-        \begin{answer}
-            
-        \end{answer}
-    \end{part}
-
 \end{question}
 
 %%%%%%%%%%%%%%%%%%%%%%%% Question# 4 %%%%%%%%%%%%%%%%%%%%%%%%
 \begin{question}{4. Many More Fish in the Tree (20 points)}
     \begin{part}
         \begin{answer}
-            
+            Let $P(L)$ be the claim "$conatains(a, concat(L, S)) = contains(a, L)$ or $contains(a, S)$" for any $a : \mathbb{Z}$ and any $L, S: List$. \\
+            We show $P(L)$ holds for any list $U \in L$ by structural induction.\\
+            \textbf{Base Case (L = nil):} 
+            \begin{align*}
+                contains(a, concat(nil, S)) &= contains(a, S) \tag{Def of $concat$}\\
+            \end{align*}
+            \textbf{Inductive Hypothesis:} Suppose $P(U)$ holds for an arbitrary list $U$ \\
+            \textbf{Inductive Step ($P(cons(b, U))$):} Let $b$ be an arbitrary integer.
+            \begin{align*}
+                contains(a, concat(cons(b, U), S)) &= contains(a, cons(b, concat(U, S))) \tag{Def of $concat$} \\
+                \textbf{Case 1 ($a = b$): }  &= contains(a, cons(b, U)) \tag{Def of $contains$}\\
+                \textbf{Case 2 ($a \neq b$): } &= contains(a, concat(U, S)) \tag{Def of $contains$} \\
+                &= contains(a, U) \text{ or } contains(a, S) \tag{Inductive Hypothesis} \\
+                &= contains(a, cons(b, U)) \text{ or } contains(a, S) \tag{Def of $contains$} \\
+            \end{align*}
+
+            \textbf{Conclusion:} Therefore, $P(L)$ holds for any list $L$ by the principle of induction.
         \end{answer}
     \end{part}
-
+\newpage
     \begin{part}
         \begin{answer}
-            
+            Let $P(U)$ be the claim "$contains(a, values(U)) = lookup(a, U)$" for any $a : \mathbb{Z}, U :$ BST. \\
+            We show $P(U)$ holds for any BST $T \in U$ by structural induction.\\
+            \textbf{Base Case (U = empty):} 
+            \begin{align*}
+                contains(a, values(empty)) &= contains(a, nil) \tag{Def of $values$}\\
+                &= false \tag{Def of $contains$}\\
+                &= lookup(a, empty) \tag{Def of $lookup$}\\
+            \end{align*}
+            \textbf{Inductive Hypothesis:} Suppose $P(S)$ and $P(T)$ holds for arbitrary BSTs $S$ and $T$ \\
+            \textbf{Inductive Step ($P(node(b, S, T))$):} Let $b$ be an arbitrary integer.
+            \begin{align*}
+                contains(a, values(node(b, S, T))) &= contains(a, concat(values(S), cons(b, values(T)))) \tag{Def of $values$} \\
+                &= contains(a, values(S)) \text{ or } contains(a, cons(b, values(T))) \tag{from part (a)} \\
+                &= contains(a, values(S)) \text{ or } (a = b) \text{ or } contains(a, values(T)) \tag{Def of $contains$} \\
+                \textbf{Case 1 ($a = b$): }  &= (a = b) \tag{Def of $contains$}\\
+                &= true \\
+                &= lookup(a, node(b, S, T)) \tag{Def of $lookup$ when $a = b$}\\
+                \textbf{Case 2 ($a < b$): }  &= contains(a, values(S)) \text{ or } false \text{ or } false \tag{BST invariant} \\
+                &= contains(a, values(S)) \\
+                &= lookup(a, S) \tag{Inductive Hypothesis} \\
+                &= lookup(a, node(b, S, T)) \tag{Def of $lookup$ when $a < b$}\\
+                \textbf{Case 3 ($a > b$): }  &= false \text{ or } false \text{ or } contains(a, values(T)) \tag{BST invariant} \\
+                &= contains(a, values(T)) \\
+                &= lookup(a, T) \tag{Inductive Hypothesis} \\
+                &= lookup(a, node(b, S, T)) \tag{Def of $lookup$ when $a > b$}\\
+            \end{align*}
+
+            \textbf{Conclusion:} Therefore, $P(U)$ holds for any BST $U$ by the principle of induction.
         \end{answer}
     \end{part}
 \end{question}
@@ -229,7 +266,18 @@
 \begin{question}{5. Chomping at the Split (20 points)}
     \begin{part}[b]
         \begin{answer}
-
+            \begin{align*}
+                \textbf{func\;\;}  
+                &parse(nil) &&:= nil \\
+                &parse(cons(a, L)) &&:= cons((explode(\text{"white"}), P), parse(S)) \tag{for any $a : \mathbb{Z}$ and $L : List$}\\
+                & &&\text{ if } a \ne LB \text{ and } split\_at(cons(a, L), LB) = (P, S) \\\\
+                &parse(cons(a, L)) &&:= undefined  \tag{for any $a : \mathbb{Z}$ and $L : List$} \\
+                & && \text{ if } a = LB \text { and } split\_at(L, MB) = (L, nil) \\
+                & &&\text{ or } a = LB \text{ and }split\_at(L, MB) = (P, S) \text{ and } split\_at(S, RB) = (R, nil) \\\\
+                &parse(cons(a, L)) &&:= cons((P, R), parse(Q)) \tag{for any $a : \mathbb{Z}$ and $L : List$} \\
+                & &&\text{ if } a = LB \text { and } split\_at(L, MB) = (P, S) \\ 
+                & &&\text { and } split\_at(S, RB) = (X, Y)\\ & &&\text { and } X = cons(MB, R) \text { and } Y = cons(RB, Q) 
+            \end{align*}
         \end{answer}
     \end{part}
 \end{question}

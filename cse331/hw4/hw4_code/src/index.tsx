@@ -1,6 +1,6 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { parseHighlightLines } from './parser';
+import { parseHighlightText } from './parser';
 import { makeForm, showColors, showHighlights } from './ui';
 import { ColorList } from './color_list';
 import { makeColorTree } from './color_tree';
@@ -21,7 +21,7 @@ try {
 
   // If the query included a list of lines, then show them highlighted.
   } else if (lines) {
-    const highlights = parseHighlightLines(lines);
+    const highlights = parseHighlightText(lines);
     root.render(<React.StrictMode>{showHighlights({highlights: highlights, colorlist})}</React.StrictMode>);
 
   // Otherwise, show the form asking them for input.
