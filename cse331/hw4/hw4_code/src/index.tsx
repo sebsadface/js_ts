@@ -2,7 +2,8 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { parseHighlightLines } from './parser';
 import { makeForm, showColors, showHighlights } from './ui';
-import { ColorList, makeSimpleColorList } from './color_list';
+import { ColorList } from './color_list';
+import { makeColorTree } from './color_tree';
 
 
 // Parse the query parameters in the URL.
@@ -11,7 +12,7 @@ const word = params.get("word");
 const lines = params.get("lines");
 
 const root = createRoot(document.getElementById('main')!);
-const colorlist: ColorList = makeSimpleColorList();
+const colorlist: ColorList = makeColorTree();
 
 try {
   // If the query included a word to search for, show the colors containing that

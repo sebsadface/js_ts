@@ -29,7 +29,6 @@ export interface ColorList {
 */
 class SimpleColorList implements ColorList {
   /** 
-   * RI: 
    * AF: obj = this.colorlist
    */
   readonly colorlist: List<ColorInfo>;
@@ -85,7 +84,7 @@ export function makeSimpleColorList(): SimpleColorList {
 
     // Returns a new list containing just the names of those colors that include the
   // given text.
-  function findMatchingNamesIn(text: string, colors: List<ColorInfo>): List<string> {
+  export function findMatchingNamesIn(text: string, colors: List<ColorInfo>): List<string> {
     if (colors === nil) {
       return nil;
     } else if (colors.hd[0].includes(text)) {
