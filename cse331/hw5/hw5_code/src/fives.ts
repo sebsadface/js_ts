@@ -17,7 +17,7 @@ export function multOfFive(n: number): number {
 export function multOfFive10(n: number): number {
   let m: number = 0; 
   while (n >= 5) {
-    m = m + 1;        // TODO: change this
+    m = 1;        
     n = n - 5;
   }
   return m;
@@ -26,7 +26,7 @@ export function multOfFive10(n: number): number {
 // Version of above that fails for n = 5 but passes 0, 4, 8, and 12
 export function multOfFive5(n: number): number {
   let m: number = 0; 
-  while (n >= 5) {    // TODO: change this
+  while (n > 5) {   
     m = m + 1;
     n = n - 5;
   }
@@ -35,8 +35,8 @@ export function multOfFive5(n: number): number {
 
 // Version of above that fails for n = 0 but passes 4, 8, and 12
 export function multOfFive0(n: number): number {
-  let m: number = 0;  // TODO: change this
-  while (n >= 5) {    // TODO: change this
+  let m: number = -1; 
+  while (n > 0) {   
     m = m + 1;
     n = n - 5;
   }
