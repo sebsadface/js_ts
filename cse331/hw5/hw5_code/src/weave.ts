@@ -11,10 +11,10 @@ export function weaveWarpFacedOdds(colors: List<Color>): List<Color> {
   let rest: List<Color> = colors;
   let done: List<Color> = nil;
 
-  // TODO: add an Inv
+  // {{Inv: weaveWarpFacedOdds(colors) = concat(rev(done), weaveWarpFacedOdds(rest))}}
   while (rest !== nil && rest.tl !== nil) {
-    // TODO: implement this
-    break;  // TODO: remove
+    done = cons(rest.hd, done);
+    rest = (rest.tl).tl;
   }
 
   if (rest === nil) {
@@ -23,8 +23,7 @@ export function weaveWarpFacedOdds(colors: List<Color>): List<Color> {
     //                      = rev(done)                      by Fact C
     return rev(done);
   } else {
-    // TODO: implement this
-    throw new Error(`odd length not yet implemented`);
+    return rev(cons(rest.hd, done));
   }
 }
 
@@ -38,17 +37,16 @@ export function weaveWarpFacedEvens(colors: List<Color>): List<Color> {
   let rest: List<Color> = colors;
   let done: List<Color> = nil;
 
-  // TODO: add an Inv
+  // {{Inv: weaveWarpFacedEvens(colors) = concat(rev(done), weaveWarpFacedEvens(rest))}}
   while (rest !== nil && rest.tl !== nil) {
-    // TODO: implement this
-    break;  // TODO: remove
+    done = cons((rest.tl).hd, done);
+    rest = (rest.tl).tl;
   }
 
   if (rest === nil) {
     return rev(done);
   } else {
-    // TODO: implement this
-    throw new Error(`odd length not yet implemented`);
+   return rev(done);
   }
 }
 
@@ -63,17 +61,16 @@ export function weaveBalancedOdds(colors: List<Color>, c: Color): List<Color> {
   let rest: List<Color> = colors;
   let done: List<Color> = nil;
 
-  // TODO: add an Inv
+  // {{Inv: weaveBalancedOdds(colors, c) = concat(rev(done), weaveBalancedOdds(rest, c))}}
   while (rest !== nil && rest.tl !== nil) {
-    // TODO: implement this
-    break;  // TODO: remove
+    done = cons(c, cons(rest.hd, done));
+    rest = (rest.tl).tl;
   }
 
   if (rest === nil) {
     return rev(done);
   } else {
-    // TODO: implement this
-    throw new Error(`odd length not yet implemented`);
+    return rev(cons(rest.hd, done));
   }
 }
 
@@ -88,17 +85,16 @@ export function weaveBalancedEvens(colors: List<Color>, c: Color): List<Color> {
   let rest: List<Color> = colors;
   let done: List<Color> = nil;
 
-  // TODO: add an Inv
+  // {{Inv: weaveBalancedEvens(colors, c) = concat(rev(done), weaveBalancedEvens(rest, c))}}
   while (rest !== nil && rest.tl !== nil) {
-    // TODO: implement this
-    break;  // TODO: remove
+    done = cons(rest.tl.hd, cons(c, done));
+    rest = (rest.tl).tl;
   }
 
   if (rest === nil) {
     return rev(done);
   } else {
-    // TODO: implement this
-    throw new Error(`odd length not yet implemented`);
+    return rev(cons(c, done));
   }
 }
 
@@ -114,13 +110,24 @@ export function weaveBalancedEvens(colors: List<Color>, c: Color): List<Color> {
  *   - weaveWarpFaced(1, colors) = cons(weaveWarpFacedEvens(colors), nil)
  *   - weaveWarpFaced(n+2, colors) =
  *         cons(weaveWarpFacedEvens(colors),
- *             cons(weaveWarpFacedRows(colors), weaveWarpFaced(n, colors)))
+ *             cons(weaveWarpFacedOdds(colors), weaveWarpFaced(n, colors)))
  */
 export function weaveWarpFaced(rows: number, colors: List<Color>): List<List<Color>> {
-  // TODO: implement this with a while loop instead
-  // Be sure to document your loop invariant with an Inv comment above the loop
-  return cons(weaveWarpFacedEvens(colors),
-      cons(weaveWarpFacedOdds(colors), nil));
+  let i: number = 0;
+  let s: List<List <Color>> = nil;
+
+  if (rows % 2 !== 0) {
+    s = cons(weaveWarpFacedEvens(colors), nil);
+    i = i + 1;
+  }
+
+  // {{Inv: s = weaveWarpFaced(i, colors)}}
+  while (i !== rows) {
+    s = cons(weaveWarpFacedEvens(colors), cons(weaveWarpFacedOdds(colors), s));
+    i = i + 2;
+  }
+
+  return s;
 }
 
 /**
@@ -136,8 +143,19 @@ export function weaveWarpFaced(rows: number, colors: List<Color>): List<List<Col
  *             cons(weaveBalancedRows(colors, c), weaveBalanced(n, colors, c)))
  */
 export function weaveBalanced(rows: number, colors: List<Color>, c: Color): List<List<Color>> {
-  // TODO: implement this with a while loop instead
-  // Be sure to document your loop invariant with an Inv comment above the loop
-  return cons(weaveBalancedEvens(colors, c),
-      cons(weaveBalancedOdds(colors, c), nil));
+  let i: number = 0;
+  let s: List<List <Color>> = nil;
+
+  if (rows % 2 !== 0) {
+    s = cons(weaveBalancedEvens(colors, c), nil);
+    i = i + 1;
+  }
+
+  // {{Inv: s = weaveBalanced(i, colors, c)}}
+  while (i !== rows) {
+    s = cons(weaveBalancedEvens(colors, c), cons(weaveBalancedOdds(colors, c), s));
+    i = i + 2;
+  }
+
+  return s;
 }

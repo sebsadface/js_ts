@@ -55,12 +55,14 @@ export function Weave(props: WeaveProps): JSX.Element {
 // Returns a list of HTML DIV elements, one per row of the weave, showing the
 // colors in that row. Rows at eve indexes are offset a bit.
 export function DrawWeave(weave: List<List<Color>>, index: number): List<JSX.Element> {
-  // TODO: replace this with a proper recursive implementation
-  if (weave === nil || weave.tl === nil || weave.tl.tl !== nil)
-    throw new Error("only supports 2 rows so far ");
-
-  return cons(DrawWeaveRow(weave.hd, true, index),
-      cons(DrawWeaveRow(weave.tl.hd, false, index + 1), nil));
+  if (weave === nil) {
+    return nil;
+  } else if (weave.tl === nil) {
+    return cons(DrawWeaveRow(weave.hd, false, index), nil);
+  } else {
+    return cons(DrawWeaveRow(weave.hd, true, index),
+      cons(DrawWeaveRow(weave.tl.hd, false, index + 1), DrawWeave(weave.tl.tl, index + 2)));
+  }
 }
 
 // Returns an HTML DIV element drawing a row with the given colors, after an

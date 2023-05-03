@@ -45,7 +45,7 @@ const colors = GetWeftColors(params);
 const root = createRoot(document.getElementById('main')!);
 if ((type !== undefined) && (colors !== undefined)) {
   root.render(
-    <React.StrictMode><Weave type={type} colors={colors} rows={2}/></React.StrictMode>);
+    <React.StrictMode><Weave type={type} colors={colors} rows={20}/></React.StrictMode>);
 } else {
   root.render(
     <React.StrictMode><WeaveForm/></React.StrictMode>);
