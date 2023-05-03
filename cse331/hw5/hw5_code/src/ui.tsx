@@ -57,11 +57,12 @@ export function Weave(props: WeaveProps): JSX.Element {
 export function DrawWeave(weave: List<List<Color>>, index: number): List<JSX.Element> {
   if (weave === nil) {
     return nil;
-  } else if (weave.tl === nil) {
-    return cons(DrawWeaveRow(weave.hd, false, index), nil);
   } else {
-    return cons(DrawWeaveRow(weave.hd, true, index),
-      cons(DrawWeaveRow(weave.tl.hd, false, index + 1), DrawWeave(weave.tl.tl, index + 2)));
+    if (index % 2 === 0) {
+      return cons(DrawWeaveRow(weave.hd, true, index), DrawWeave(weave.tl, index + 1));
+    } else {
+      return cons(DrawWeaveRow(weave.hd, false, index), DrawWeave(weave.tl, index + 1));
+    }
   }
 }
 
