@@ -3,9 +3,30 @@ const DEBUG: boolean = true;  // turn this to 'false' later if you want to preve
 // to false, but in a bigger program we might want to turn it off after debugging is
 // complete, to avoid running expensive invariant checks when the project is released.
 
-/** TODO: (part 1a) write the specification */
+/**
+ * Substitute the words (that has a replacement in the given map) in the given array
+ * with the replacement. If a word doesn't have a replacement, it remains unchanged.
+ * @param words an array of words that need to be substituted.
+ * @param reps a map from words to their replacements.
+ * @modifies words
+ * @effects words = substitute(words, reps),
+ *    where substitute([], reps) = []
+ *          substitute(A ++ [w], reps) = substitute(A, reps) ++ [M[w]]    if w in reps
+ *          substitute(A ++ [w], reps) = substitute(A, reps) ++ [w]       if w not in reps
+ */
 export function substitute(words: string[], reps: Map<string, string>): void {
   // TODO: (part 1b) implement this
+  let j: number = 0;
+
+  // Inv: words = substitute(words0[0..j-1], reps) ++ words0[j..n-1]
+  while (j !== words.length) {
+    const w = reps.get(words[j]);
+    if (w !== undefined) {
+      words[j] = w;
+    } 
+    j = j + 1;
+  }
+
 }
 
 /**

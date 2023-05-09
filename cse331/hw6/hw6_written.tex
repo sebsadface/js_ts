@@ -160,7 +160,7 @@
 %% show up in the document unless you uncomment \header  %%
 %% below                                                 %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand{\myhwname}{Homework 5}
+\newcommand{\myhwname}{Homework 6}
 \newcommand{\myname}{Sebastian Liu}
 \newcommand{\myemail}{ll57@cs.washington.edu}
 \newcommand{\mysection}{AD}
@@ -174,316 +174,63 @@
 \begin{document}
 
 \begin{center}
-    \textbf{Homework 5 Written} \bigskip
+    \textbf{Homework 6 Written} \bigskip
 \end{center}
 
-%%%%%%%%%%%%%%%%%%%%%%%% Question# 1 %%%%%%%%%%%%%%%%%%%%%%%%
-\begin{question}{1. Hit the Road, Back (10 points)}
-    \begin{part}
-        \begin{answer}
-            \begin{align*}
-                &\{\{x > 0 \}\} \\
-                & y = 3 * x + 5; \\
-                &\{\{x > 0 \text{ and } y = 3x + 5\}\} \\
-                & z = y - x; \\
-                &\{\{x > 0 \text{ and } y = 3x + 5 \text{ and } z = y - x\}\} \\
-                & z = 2 * z; \\
-                &\{\{x > 0 \text{ and } y = 3x + 5 \text{ and } z = 2(y - x) \}\} 
-            \end{align*}
-
-    We can see that this last assertion implies the stated post condition $z \ge 14$ as follows:
-            \begin{align*}
-                z &= 2 \cdot (y - x) \\
-                &= 2 \cdot (3x + 5 - x) \tag{since $y = 3x + 5$} \\
-                &= 2 \cdot(2x + 5) \\
-                &= 4x + 10 \\ 
-                &\ge 4 \cdot 1 + 10 \tag {since $x > 0$ and $x$ is an integer which implies that $x \ge 1$} \\ 
-                &= 4 + 10 \\
-                &= 14
-            \end{align*}
-
-        \end{answer}
-    \end{part}
-\newpage
-    \begin{part}
-        \begin{answer}
-            \begin{align*}
-                &\{\{ 3x \ge u \text{ and } v \le 1 \}\} \\
-                &\{\{ 3x + 1 \ge u + v \}\} \\
-                &y = u + v; \\
-                &\{\{ 3x + 1 \ge y \}\} \\
-                &x = x * 3; \\
-                &\{\{ x + 1 \ge y \}\} \\
-                &z = x + 1; \\
-                &\{\{ z \ge y\}\}
-            \end{align*}
-
-            We can see that $3x \ge u$ and $v \le 1$ implies $3x + 1 \ge u +v$ since: 
-            \begin{align*}
-                   1 & \ge v \tag{since $v \le 1$} \\
-                   3x + 1 &\ge u +v \tag{since $3x \ge u$, and adding both sides of the inequality}
-            \end{align*}
-        \end{answer}
-    \end{part}
-\end{question}
-
 %%%%%%%%%%%%%%%%%%%%%%%% Question# 2 %%%%%%%%%%%%%%%%%%%%%%%%
-\begin{question}{2. Just a Working If (16 points)}
+\begin{question}{2. Loops, I Did It Again (8 points)}
     \begin{part}
         \begin{answer}
-            \begin{align*}
-                &\{\{y \ge 0 \}\} \\
-                &\text{if } (y == 0) \{\\
-                &\;\;\;\; \{\{ P_1: y \ge 1 \text{ and } y = 0\}\}\\
-                &\;\;\;\; \{\{ Q_1: 1 > y\}\} \\
-                &\;\;\;\; x = 1; \\
-                &\;\;\;\; \{\{ x > y \}\} \\
-                &\} \text{ else } \{ \\
-                &\;\;\;\; \{\{ P_2: y \ge 1 \text{ and } y \ne 0\}\}\\
-                &\;\;\;\; \{\{ Q_2: 2y > y \}\}\\
-                &\;\;\;\; x = 2 * y; \\
-                &\;\;\;\; \{\{ x > y \}\} \\
-                &\} \\
-                &\{\{ x > y \}\}
-            \end{align*}
-            To see that $P_1$ implies $Q_1$, note that $y = 0$ implies that $1 > y$.\\
-            To see that $P_2$ implies $Q_2$, we can see that since $y \ge 1$, we can divide both sides of $2y > y$ by $y$ and get $2 > 1$ which is always true.
+            
         \end{answer}
     \end{part}
-    \newpage
+
     \begin{part}
         \begin{answer}
-            \begin{align*}
-                &\{\{x \ge 1 \text{ and } y > 0 \}\} \\
-                &\text{if } (y >= 5*x) \{\\
-                &\;\;\;\; \{\{ P_1: x \ge 1 \text{ and } y > 0 \text{ and } y \ge 5x \}\}\\
-                &\;\;\;\; \{\{ Q_1: 20 / y \le 4\}\} \\
-                &\;\;\;\; x = 20 / y; \\
-                &\;\;\;\; \{\{ x \le 4 \}\} \\
-                &\} \text{ else } \{ \\
-                &\;\;\;\; \{\{ P_2: x \ge 1 \text{ and } y > 0 \text{ and } y < 5x  \}\}\\
-                &\;\;\;\; \{\{ Q_2: (y - x) / x \le 4 \}\}\\
-                &\;\;\;\; x = (y - x) / x; \\
-                &\;\;\;\; \{\{ x \le 4 \}\} \\
-                &\} \\
-                &\{\{ x \le 4 \}\}
-            \end{align*}
-            To see that $P_1$ implies $Q_1$, we can calculate: \\
-            \begin{align*}
-                20 / y & \le 20 / 5x \tag{since $y \ge 5x$} \\
-                & \le 20 / 5 \tag{since $x \ge 1$}\\
-                & = 4
-            \end{align*}
-            To see that $P_2$ implies $Q_2$, we can calculate: \\
-            \begin{align*}
-                (y - x)/x & < (5x - x)/x \tag{since $y < 5x$}\\
-                & = 4x /x \\
-                & = 4 \tag{since $x \ge 1$}
-            \end{align*}
+            
         \end{answer}
     \end{part}
+
 \end{question}
 
 %%%%%%%%%%%%%%%%%%%%%%%% Question# 3 %%%%%%%%%%%%%%%%%%%%%%%%
-\begin{question}{3. Hula-Loop (10 points)}
+\begin{question}{3. Jumping Through Loops (12 points)}
     \begin{part}
         \begin{answer}
-            At the top of the loop initially, we can see that since $n = n_0$ and $n_0 \ge 0$, we have $n \ge 0$. Also because we know $m = 0$, we have:
-            \begin{align*}
-                5m &=  5 \cdot 0 \tag{since $m = 0$} \\
-                &= 0 \\
-                &= n_0 - n_0 \\
-                &= n_0 - n \tag{since $n = n_0$} \\
-            \end{align*}
+            
         \end{answer}
     \end{part}
 
     \begin{part}
         \begin{answer}
-            After the loop we know and that $5m = n_0 - n$ and that $n \ge 0$. Thus, we can see: 
-            \begin{align*}
-                5m &= n_0 - n \tag{as noted above} \\
-                    &\le n_0 - 0 \tag{since $n \ge 0$} \\
-                    &= n_0
-            \end{align*}
-            Since we also know that $n < 5$, so we have:
-            \begin{align*}
-                n_0 &= 5m + n \tag{since $5m = n_0 - n$}\\
-                &< 5m + 5 \tag{since $n < 5$}  \\
-                &= 5(m + 1)
-            \end{align*}
+            
         \end{answer}
     \end{part}
-\newpage
+
     \begin{part}
         \begin{answer}
-            We can start by filling in the assertions as follows:
-            \begin{align*}
-                &\{\{ \text{Inv: } 5m = n_0 - n \text{ and } n \ge 0 \}\} \\
-                & \text{while } (n >= 5) \{\\
-                    &\;\;\;\; \{\{ P_1: 5m = n_0 - n \text{ and } n \ge 0 \text{ and } n \ge 5 \}\}\\
-                    &\;\;\;\; \{\{ Q_1: 5(m + 1) = n_0 - (n - 5) \text{ and } (n - 5) \ge 0 \}\}\\
-                &\;\;\;\; m = m + 1;\\
-                    &\;\;\;\; \{\{ P_2: 5(m - 1) = n_0 - n \text{ and } n \ge 0 \text{ and } n \ge 5 \}\}\\
-                    &\;\;\;\; \{\{ Q_2: 5m = n_0 - (n - 5) \text{ and } (n - 5) \ge 0 \}\}\\
-                &\;\;\;\; n = n - 5;  \\
-                &\;\;\;\; \{\{  5m = n_0 - n \text{ and } n \ge 0 \}\}\\
-                &\} 
-            \end{align*}
-            We can see that $P1$ implies $Q1$ by the following calculations:
-            \begin{align*}
-                n - 5 &\ge 5 - 5 \tag{since $n \ge 5$} \\
-                &= 0
-            \end{align*}
-            \begin{align*}
-                5(m + 1) &= 5m + 5\\
-                &= n_0 - n + 5 \tag{since $5m = n_0 - n$}\\
-                &= n_0 - (n - 5)
-            \end{align*}
-            And we can see that P2 implies Q2 by these, very similar, calculations:
-            \begin{align*}
-                n - 5 &\ge 5 - 5 \tag{since $n \ge 5$} \\
-                &= 0
-            \end{align*}
-            \begin{align*}
-                5m &= 5(m - 1) + 5\\
-                &= n_0 - n + 5 \tag{since $5(m - 1) = n_0 - n$}\\
-                &= n_0 - (n - 5)
-            \end{align*}
+            
         \end{answer}
     \end{part}
 \end{question}
 
 %%%%%%%%%%%%%%%%%%%%%%%% Question# 5 %%%%%%%%%%%%%%%%%%%%%%%%
-\begin{question}{5. Loop Dreams (16 points)}
+\begin{question}{5. Words of a Feather Flock Together (20 points)}
     \begin{part}
         \begin{answer}
-            At the top of the loop initially, we can see that $a = 0$ and $b = 0$, so we have:
-            \begin{align*}
-                \text{amount-greater}(L_0, x) &= \text{amount-greater}(L, x) \tag{since $L = L_0$} \\
-                &= 0 + \text{amount-greater}(L, x) \\
-                &= a + \text{amount-greater}(L, x) \tag{since $a = 0$}
-            \end{align*}
-            Similarly:
-            \begin{align*}
-                \text{amount-less}(L_0, x) &= \text{amount-less}(L, x) \tag{since $L = L_0$} \\
-                &= 0 + \text{amount-less}(L, x) \\
-                &= b + \text{amount-less}(L, x) \tag{since $b = 0$}
-            \end{align*}
+            
         \end{answer}
     \end{part}
 
     \begin{part}
         \begin{answer}
-            After the loop we know that $L =$ nil, amount-greater($L_0, x) = a +$ amount-greater$(L,x)$, and amount-less($L_0, x) = b +$ amount-greater$(L,x)$. 
-            Thus, we can see:
-            \begin{align*}
-                a &= \text{amount-greater}(L_0, x) -  \text{amount-greater}(L, x) \tag{since amount-greater($L_0, x) = a +$ amount-greater$(L,x)$} \\\\
-                &= \text{amount-greater}(L_0, x) -  \text{amount-greater}(nil, x) \tag{since $L =$ nil} \\
-                &= \text{amount-greater}(L_0, x) - 0 \tag{Def of amount-greater} \\
-                &= \text{amount-greater}(L_0, x)
-            \end{align*}
-            Similarly:
-            \begin{align*}
-                b &= \text{amount-less}(L_0, x) -  \text{amount-less}(L, x) \tag{since amount-less($L_0, x) = b +$ amount-less$(L,x)$} \\\\
-                &= \text{amount-less}(L_0, x) -  \text{amount-less}(nil, x) \tag{since $L =$ nil} \\
-                &= \text{amount-less}(L_0, x) - 0 \tag{Def of amount-less} \\
-                &= \text{amount-less}(L_0, x)
-            \end{align*}
-        \end{answer}
-    \end{part}
-
-    \newpage
-
-    \begin{part}
-        \begin{answer}
-            We can start by filling in the assertions as follows:
-            \begin{align*}
-                &\{\{ \text{amount-greater}(L_0, x) = a + \text{amount-greater}(L,x) \text{ and } \\ 
-                & \;\;\;\; \text{amount-less}(L_0, x) = b + \text{amount-less}(L,x) \text{ and } L \ne \text{nil} \}\} \\
-                & \text{if } (\text{L.hd $>$ x}) \{\\\\
-                    &\;\;\;\; \{\{ P_1: \text{amount-greater}(L_0, x) = a + \text{amount-greater}(L,x) \text{ and } \\ 
-                    & \;\;\;\; \text{amount-less}(L_0, x) = b + \text{amount-less}(L,x) \text{ and } L.\text{hd} > x \}\}\\
-                    &\;\;\;\; \{\{ Q_1: \text{amount-greater}(L_0, x) = a + (L.\text{hd} - x) + \text{amount-greater}(L.\text{tl},x) \text{ and } \\ 
-                    & \;\;\;\; \text{amount-less}(L_0, x) = b + \text{amount-less}(L.\text{tl},x) \text{ and } L \ne \text{nil} \}\}\\\\
-                &\;\;\;\; \text{a = a + (L.hd - x)};\\
-                &\{\{ \text{amount-greater}(L_0, x) = a + \text{amount-greater}(L.\text{tl},x) \text{ and } \\ 
-                & \;\;\;\; \text{amount-less}(L_0, x) = b + \text{amount-less}(L.\text{tl},x) \text{ and } L \ne \text{nil} \}\} \\
-                &\} \text{ else if } (\text{L.hd $<$ x}) \{\\\\
-                    &\;\;\;\; \{\{ P_2: \text{amount-greater}(L_0, x) = a + \text{amount-greater}(L,x) \text{ and } \\ 
-                    & \;\;\;\; \text{amount-less}(L_0, x) = b + \text{amount-less}(L,x) \text{ and } L.\text{hd} < x\}\}\\
-                    &\;\;\;\; \{\{ Q_2: \text{amount-greater}(L_0, x) = a + \text{amount-greater}(L.\text{tl},x) \text{ and } \\ 
-                    & \;\;\;\; \text{amount-less}(L_0, x) = b + (x -L.\text{hd}) + \text{amount-less}(L.\text{tl},x) \text{ and } L \ne \text{nil} \}\}\\\\
-                &\;\;\;\; \text{b = b + (x - L.hd)};  \\
-                &\{\{ \text{amount-greater}(L_0, x) = a + \text{amount-greater}(L.\text{tl},x) \text{ and } \\ 
-                & \;\;\;\; \text{amount-less}(L_0, x) = b + \text{amount-less}(L.\text{tl},x) \text{ and } L \ne \text{nil} \}\} \\
-                &\} \\
-                &\{\{ \text{amount-greater}(L_0, x) = a + \text{amount-greater}(L.\text{tl},x) \text{ and } \\ 
-                & \;\;\;\; \text{amount-less}(L_0, x) = b + \text{amount-less}(L.\text{tl},x) \text{ and } L \ne \text{nil} \}\} \\
-                & \text{L = L.tl};\\
-                &\{\{ \text{amount-greater}(L_0, x) = a + \text{amount-greater}(L,x) \text{ and } \\ 
-                & \;\;\;\; \text{amount-less}(L_0, x) = b + \text{amount-less}(L,x) \text{ and } L \ne \text{nil} \}\} 
-            \end{align*}
-        \end{answer}
-\newpage
-\begin{answer}
-            We can see that $P_1$ implies $Q_1$ by the following three calculations:\\
-             (1)\begin{align*}
-                L.\text{hd} > x \rightarrow L \ne \text{nil} \tag{L.hd $> x$ holds implies L is a nonempty list}
-            \end{align*}
-            (2)
-            \begin{align*}
-                \text{amount-greater}(L_0, x) &= a + \text{amount-greater}(L, x) \tag{as noted in $P_1$} \\
-                &= a + \text{amount-greater}(cons(L.\text{hd}, L.\text{tl}), x) \tag{Def of list, and since L.hd $> x$ implies L is nonempty} \\\\
-                &= a + (L.\text{hd} - x) + \text{amount-greater}(L.\text{tl}, x) \tag{Def of amount-greater, and since L.hd $> x$}
-            \end{align*}
-            (3)
-            \begin{align*}
-                \text{amount-less}(L_0, x) &= b + \text{amount-less}(L, x) \tag{as noted in $P_1$}\\
-                &= b + \text{amount-less}(cons(L.\text{hd}, L.\text{tl}), x) \tag{Def of list, and since L.hd $> x$ implies L is nonempty} \\\\
-                &= b + \text{amount-less}(L.\text{tl}, x) \tag{Def of amount-less, and since L.hd $> x$}
-            \end{align*} \\
-
-            Similarly, we can see that $P_2$ implies $Q_2$ by the following three calculations:\\
-             (1)\begin{align*}
-                L.\text{hd} < x \rightarrow L \ne \text{nil} \tag{L.hd $< x$ holds implies L is a nonempty list}
-            \end{align*}
-            (2)
-            \begin{align*}
-                \text{amount-greater}(L_0, x) &= a + \text{amount-greater}(L, x) \tag{as noted in $P_2$} \\
-                &= a + \text{amount-greater}(cons(L.\text{hd}, L.\text{tl}), x) \tag{Def of list, and since L.hd $< x$ implies L is nonempty} \\\\
-                &= a + \text{amount-greater}(L.\text{tl}, x) \tag{Def of amount-greater, and since L.hd $< x$}
-            \end{align*}
-            (3)
-            \begin{align*}
-                \text{amount-less}(L_0, x) &= b + \text{amount-less}(L, x) \tag{as noted in $P_2$}\\
-                &= b + \text{amount-less}(cons(L.\text{hd}, L.\text{tl}), x) \tag{Def of list, and since L.hd $< x$ implies L is nonempty} \\\\
-                &= b + (x - L.\text{hd}) + \text{amount-less}(L.\text{tl}, x) \tag{Def of amount-less, and since L.hd $< x$}
-            \end{align*}
+            
         \end{answer}
     \end{part}
 \end{question}
 
-%%%%%%%%%%%%%%%%%%%%%%%% Question# 8 %%%%%%%%%%%%%%%%%%%%%%%%
-\begin{question}{Extra Credit: Do Bears Loop in the Woods? (0 points)}
-    \begin{part}
-        \begin{answer}
-            \{\{Inv: concat$(L, R)$ = cons($S.$hd, concat(L, S.tl))\}\}
-        \end{answer}
-    \end{part}
-
-    \begin{part}
-        \begin{answer}
-            
-        \end{answer}
-    \end{part}
-
-    \begin{part}
-        \begin{answer}
-            
-        \end{answer}
-    \end{part}
-
+%%%%%%%%%%%%%%%%%%%%%%%% Question# 7 %%%%%%%%%%%%%%%%%%%%%%%%
+\begin{question}{7. Extra Credit: She Wore a Raspberry Array (0 points)}
     \begin{part}
         \begin{answer}
             

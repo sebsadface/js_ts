@@ -6,6 +6,32 @@ describe('words', function() {
 
   it('substitute', function() {
     // TODO: (part 1c) add tests here
+    const reps = new Map([["abstruct", "A"], ["data", "D"], ["type", "T"], ["hard", "easy"], ["lame", "cool"]]);
+
+    const words0: string[] = [];
+    const words1: string[] = ["abstruct"];
+    const words2: string[] = ["cool"];
+    const words3: string[] = ["abstruct", "data", "type"];
+    const words4: string[] = ["abstruct", "data", "type", "is", "so", "hard"];
+    const words5: string[] = ["how", "can", "abstruct", "data", "type", "be", "so", "lame"];
+
+    substitute(words0, reps);
+    assert.deepStrictEqual(words0, []);
+
+    substitute(words1, reps);
+    assert.deepStrictEqual(words1, ["A"]);
+
+    substitute(words2, reps);
+    assert.deepStrictEqual(words2, ["cool"]);
+
+    substitute(words3, reps);
+    assert.deepStrictEqual(words3, ["A", "D", "T"]);
+
+    substitute(words4, reps);
+    assert.deepStrictEqual(words4, ["A", "D", "T", "is", "so", "easy"]);
+
+    substitute(words5, reps);
+    assert.deepStrictEqual(words5, ["how", "can", "A", "D", "T", "be", "so", "cool"]);
   });
 
   it('replaceWords', function() {
