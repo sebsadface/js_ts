@@ -103,18 +103,27 @@ function isPunct(ch: string) {
  *     4. each word is either a single punctuation character or 1+ letters
  */
 export function splitWords(str: string): string[] {
-  let splits: number[] = [];  // TODO (part a): fix this
-  let j: number = 9;          // TODO (part a): fix this
+  let splits: number[] = [0];  // TODO (part a): fix this
+  let j: number = 0;          // TODO (part a): fix this
 
   CheckInv1(splits, str, j);
-
   // Inv  1. 0 = splits[0] < splits[1] < ... < splits[n] = j
-  //      2. for i = 0 .. n-1, if splits[i+1] - splits[i] > 1, then 
+  //      2. for i = 0 .. n-2, if splits[i+1] - splits[i] > 1, then 
   //         str[splits[i] ..  splits[i+1]-1] is all letters
   //      3. for i = 1 .. n-1, splits[i] is not between two letters
   //  where n = parts.length
-  while (j !== 9) {  // TODO (part 6a): fix this
+  while (j !== str.length) {  // TODO (part 6a): fix this
     // TODO (part 6a): implement this
+    j = j + 1;
+    if (j - 1 === 0 || 
+        str[j - 1] === " " || 
+        isPunct(str[j - 1]) || 
+        str[j - 2] == " " || 
+        isPunct(str[j - 2])) {
+      splits.push(j);
+    } else{
+      splits[splits.length - 1] = j;
+    }
     CheckInv1(splits, str, j);
   }
 
@@ -242,7 +251,23 @@ export function wordsContain(
  */
 export function joinWords(words: ReadonlyArray<string>): string {
   // TODO (part 4a): handle the case when the array is empty
+  if (words.length === 0) {
+    return "";
+  } 
 
   // TODO (part 4b): write a loop for the case when the array is not empty
-  return "wrong answer";
+  let parts: string[] = [];
+  let j: number = 0;
+
+  // Inv: join(parts) = join-words(words[0..j-1])
+  while (j !== words.length) {
+    if (j === 0 || isPunct(words[j][0])) {
+      parts.push(words[j]);
+    } else {
+      parts.push(" ");
+      parts.push(words[j]);
+    }
+    j = j + 1;
+  }
+  return parts.join("");
 }
