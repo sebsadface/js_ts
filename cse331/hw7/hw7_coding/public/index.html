@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Number Finder</title>
+  <style>
+    INPUT.text { padding: 5px; width: 300px; }
+    INPUT.number { width: 60px; }
+    DIV.text { margin-bottom: 10px; }
+    DIV.min { padding-left: 3px; }
+    DIV.answer { margin-top: 20px; }
+    DIV.button { margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h3>Number Finder</h3>
+  <div id="query">
+    <div class="text">
+      <label htmlFor="query-text">Query:</label>
+      <input id="query-text" name="query-text" type="text" class="text"
+             placeholder='Type your query, e.g., "fibonacci and not prime"'>
+    </div>
+
+    <div class="min">
+      <label htmlFor="range-min">Range Min:</label>
+      <input type="number" class="number" id="range-min" name="range-min"
+          min="1" value="1">
+    </div>
+
+    <div>
+      <label htmlFor="range-max">Range Max:</label>
+      <input type="number" class="number" id="range-max" name="range-max"
+          min="1" value="100">
+    </div>
+
+    <div class="button">
+      <button type="button" onclick="HandleQuery(event)">Find</button>
+    </div>
+  </div>
+  <div class="answer" id="answer"></div>
+  <script src="query.js"></script>
+</body>
+</html>
