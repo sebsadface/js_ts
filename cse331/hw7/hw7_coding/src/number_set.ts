@@ -11,18 +11,83 @@ export function setMaxForTesting(max: number) {
 }
 
 
-// Indicates the presence of x in the set by set[x] === true
-export type NumberSet = boolean[]; // TODO (1a): replace this with the NumberSet interface
+/**
+ * A set of numbers ranging from 0 to MAX (inclusive).
+ */
+export interface NumberSet {
+  // AF: obj = this.set
+
+  /**
+ * Updates this set to not include any numbers listed in set.
+ * @param set set of elements to remove from obj
+ * @modifies obj
+ * @result obj[x] = true iff obj_0[x] = true AND set2[x] = false
+ */
+  removeAll (set: NumberSet): void;
+
+  /**
+ * Updates this set to include all the numbers listed in set.
+ * @param set set of elements to add to obj
+ * @modifies obj
+ * @result obj[x] = true iff obj_0[x] = true OR set2[x] = true
+ */
+  addAll (set: NumberSet): void;
+
+  /**
+ * Returns a list of the numbers present in this set
+ * @return a list L such that x is in L iff obj[x] = true
+ */
+  getNumbers (): List<number>;
+
+} // TODO (1a): replace this with the NumberSet interface
 
 // TODO (1b, 4b): add the class BooleanNumberSet
+class BooleanNumberSet implements NumberSet {
+  /**
+   * AF: obj = this.numberSet
+   */
+  numberSet : boolean[];
+
+  /** 
+   * Creates a new BooleanNumberSet with the given list of numbers
+   * Makes obj = this.numberSet
+   */
+  constructor (numberSet : boolean[]) {
+    this.numberSet = numberSet;
+  }
+
+   removeAll(set: NumberSet): void {
+    for (let i = 1; i <= MAX; i++) {
+      if ((set as BooleanNumberSet).numberSet[i] === true)
+        this.numberSet[i] = false;
+    }
+  }
+
+  addAll(set: NumberSet): void {
+    for (let i = 1; i <= MAX; i++) {
+      if ((set as BooleanNumberSet).numberSet[i] === true)
+        this.numberSet[i] = true;
+    }
+  }
+
+
+  getNumbers(): List<number> {
+    let vals: List<number> = nil;
+    for (let i = MAX; i >= 1; i--) {  // make it sorted, just for fun
+      if (this.numberSet[i] === true)
+        vals = cons(i, vals);
+    }
+    return vals;
+  }
+}
 
 /**
- * Returns the given list of numbers in a number set.
+ * Returns the given list of numbers in a BooleanNumberSet.
  * @param vals list of numbers to include in the set (and nothing else)
  * @requires every x in vals satisfies 1 <= x <= 100
- * @returns a set S such that S[x-1] === true iff x is in vals
+ * @returns a BooleanNumberSet S such that S.numberSet[x-1] === true iff x is in vals
  */
-export function makeNumberSet(vals: List<number>): NumberSet {  // TODO(1c): change the function to makeBooleanNumberSet
+export function makeBooleanNumberSet(vals: List<number>): BooleanNumberSet {  // TODO(1c): change the function to makeBooleanNumberSet
   // Start set out as the empty set.
   const set = new Array(MAX+1);
   for (let i = 0; i <= MAX; i++)
@@ -37,50 +102,9 @@ export function makeNumberSet(vals: List<number>): NumberSet {  // TODO(1c): cha
     vals = vals.tl;
   }
 
-  return set;
+  return new BooleanNumberSet(set);
 }
 
-/**
- * Updates set1 to not include any numbers listed in set2.
- * @param set1 set from which to remove elements
- * @param set2 set of elements to remove from set1
- * @modifies set1
- * @result set1[x] = true iff set1_0[x] = true AND set2[x] = false
- */
-export function removeAll(set1: NumberSet, set2: NumberSet): void {
-  for (let i = 1; i <= MAX; i++) {
-    if (set2[i] === true)
-      set1[i] = false;
-  }
-}
-
-/**
- * Updates set1 to include all the numbers listed in set2.
- * @param set1 set to add elements to
- * @param set2 set of elements to add to set1
- * @modifies set1
- * @result set1[x] = true iff set1_0[x] = true OR set2[x] = true
- */
-export function addAll(set1: NumberSet, set2: NumberSet): void {
-  for (let i = 1; i <= MAX; i++) {
-    if (set2[i] === true)
-      set1[i] = true;
-  }
-}
-
-/**
- * Returns a list of the numbers present in the given set
- * @param set the set in question
- * @return a list L such that x is in L iff set[x] = tue
- */
-export function getNumbers(set: NumberSet): List<number> {
-  let vals: List<number> = nil;
-  for (let i = MAX; i >= 1; i--) {  // make it sorted, just for fun
-    if (set[i] === true)
-      vals = cons(i, vals);
-  }
-  return vals;
-}
 
 // TODO: Ignore this for now. Uncomment and use in part 4b
 // /**

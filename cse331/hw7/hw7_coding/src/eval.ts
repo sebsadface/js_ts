@@ -1,6 +1,6 @@
 import { List, nil, cons, explode_array } from './list';
 import { Query } from './query';
-import { NumberSet, makeNumberSet, removeAll, addAll } from './number_set';
+import { NumberSet, makeBooleanNumberSet } from './number_set';
 
 
 /**
@@ -19,11 +19,11 @@ import { NumberSet, makeNumberSet, removeAll, addAll } from './number_set';
 export function evaluate(query: Query, min: number, max: number): NumberSet {
   // TODO (1f, 3g): update to only use NumberSet interface and factory functions
   if (query === "even") {
-    return makeNumberSet(getEvens(min, max));
+    return makeBooleanNumberSet(getEvens(min, max));
   } else if (query === "prime") {
-    return makeNumberSet(getPrimes(min, max));
+    return makeBooleanNumberSet(getPrimes(min, max));
   } else if (query === "fibonacci") {
-    return makeNumberSet(getFibonacci(min, max));
+    return makeBooleanNumberSet(getFibonacci(min, max));
   } else if (query.kind === "not") {
     // TODO (5e): change to use .complement() from NumberSet instead
     return complement(evaluate(query.arg, min, max), min, max);
@@ -31,12 +31,12 @@ export function evaluate(query: Query, min: number, max: number): NumberSet {
     // TODO (5e): change to use .complement() from NumberSet instead
     const set = complement(evaluate(query.left, min, max), min, max);
     const notRight = complement(evaluate(query.right, min, max), min, max);
-    addAll(set, notRight);             // set = not left or right
+    set.addAll(notRight);             // set = not left or right
     return complement(set, min, max);  // not (not left or right) = left and right
   } else if (query.kind === "or") {
     const set1 = evaluate(query.left, min, max);
     const set2 = evaluate(query.right, min, max);
-    addAll(set1, set2);
+    set1.addAll(set2);
     return set1;
   } else {
     throw new Error('impossible');
@@ -47,8 +47,8 @@ export function evaluate(query: Query, min: number, max: number): NumberSet {
 // Returns all the numbers between min & max and not in set.
 function complement(set: NumberSet, min: number, max: number): NumberSet {
   // TODO (1f, 3g): update to only use NumberSet interface and factory functions
-  const result = makeNumberSet(getAll(min, max));
-  removeAll(result, set);
+  const result = makeBooleanNumberSet(getAll(min, max));
+  result.removeAll(set);
   return result;
 }
 

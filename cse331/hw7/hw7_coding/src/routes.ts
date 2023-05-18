@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { compact_list, explode_array } from "./list";
 import { Query, tokenize, parse } from "./query";
-import { getNumbers } from "./number_set";
 import { evaluate } from "./eval";
 
 
@@ -68,7 +67,7 @@ export function findNumbers(req: Request, res: Response) {
   const results = evaluate(query, minVal, maxVal);
   // TODO: - (1e) change the following to use .getNumbers()
   //       - (5e): add range params minVal, maxVal to following .getNumbers() call
-  res.json({results: compact_list(getNumbers(results))});
+  res.json({results: compact_list(results.getNumbers())});
 }
 
 
