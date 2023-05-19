@@ -34,10 +34,23 @@ export interface NumberSet {
   addAll (set: NumberSet): void;
 
   /**
- * Returns a list of the numbers present in this set
- * @return a list L such that x is in L iff obj[x] = true
+ * Returns a list of all the numbers in this set if the set is finite,
+ * otherwise return returns the numbers in the set that is inside the given
+ * bounds.
+ * @param a the minimum number to include in the list
+ * @param b the maximum number to include in the list
+ * @requires 0 <= a <= b <= MAX
+ * @return a list L such that if obj is finite, then x is in L iff obj[x] = true
+ * otherwise x is in L iff obj[x] = true and a <= x <= b
  */
-  getNumbers (): List<number>;
+  getNumbers (a:number, b:number): List<number>;
+
+  /**
+   * Updates this set to be the complement of itself.
+   * @modifies obj
+   * @result obj[x] = true iff obj_0[x] = false
+   */
+  complement (): void;
 
 } // TODO (1a): replace this with the NumberSet interface
 
@@ -71,13 +84,17 @@ class BooleanNumberSet implements NumberSet {
   }
 
 
-  getNumbers(): List<number> {
+  getNumbers(_: number, __: number): List<number> {
     let vals: List<number> = nil;
     for (let i = MAX; i >= 1; i--) {  // make it sorted, just for fun
       if (this.numberSet[i] === true)
         vals = cons(i, vals);
     }
     return vals;
+  }
+
+  complement(): void {
+    complement(this.numberSet);
   }
 }
 
@@ -107,15 +124,15 @@ export function makeBooleanNumberSet(vals: List<number>): BooleanNumberSet {  //
 
 
 // TODO: Ignore this for now. Uncomment and use in part 4b
-// /**
-//  * Updates set to have the opposite set of numbers: all the numbers (between 1
-//  * and 100) that were not in the set passed in.
-//  * @param set Set to complement
-//  * @modifies set
-//  * @effects set[x] = not set_0[x]
-//  */
-// export function complement(set: boolean[]): void {
-//   for (let i = 1; i <= MAX; i++) {
-//     set[i] = !set[i];
-//   }
-// }
+/**
+ * Updates set to have the opposite set of numbers: all the numbers (between 1
+ * and 100) that were not in the set passed in.
+ * @param set Set to complement
+ * @modifies set
+ * @effects set[x] = not set_0[x]
+ */
+export function complement(set: boolean[]): void {
+  for (let i = 1; i <= MAX; i++) {
+    set[i] = !set[i];
+  }
+}

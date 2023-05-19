@@ -1,3 +1,6 @@
+import { List, compact_list, explode_array } from './list';
+import { NumberSet} from './number_set';
+
 /**
  * Updates vals1 to not contain any of the numbers in vals2. Both arrays are
  * assumed to be sorted and contain only distinct numbers.
@@ -94,14 +97,107 @@ export function uniquify(L: number[]): void {
   //      L[k .. n-1] = L_0[k .. n-1] and
   //      L[i-1] = L[k-1]
   while (i !== L.length) {
-    i = i + 1;  // TODO (3a): replace this with correct code
-    k = k + 1;  // TODO (3a): replace this with correct code
+    if(L[i - 1] !== L[i]) {
+      L[k] = L[i];
+      k = k + 1;
+    }
+    i = i + 1;
   }
-
   // TODO (3a): implement the rest
+  while (L.length !== k) {
+    L.pop();
+  }
 }
 
 
 // TODO (3b): add class SortedNumberSet
+class SortedNumberSet implements NumberSet {
+  /**
+   * AF: obj = this.set iff this.comp = false.
+   *     obj = complement(this.set) iff this.comp = true.
+   * RI: this.set is sorted and has no duplicates
+   */
+  set: number[];
+  comp: boolean;
 
-// TODO (3c): add function makeSortedNumberSet
+  /**
+   * Creates a new SortedNumberSet with the given array of numbers
+   * makes obj = this.set
+   */
+  constructor(vals: number[]) {
+    this.set = vals.sort((a, b) => a - b);
+    uniquify(this.set);
+    this.comp = false;
+  }
+
+
+  removeAll(vals: NumberSet): void {
+    if (!this.comp && !(vals as SortedNumberSet).comp) {
+      removeAll(this.set, (vals as SortedNumberSet).set);
+    } else if (this.comp && !(vals as SortedNumberSet).comp) {
+      addAll(this.set, (vals as SortedNumberSet).set);
+    } else if (!this.comp && (vals as SortedNumberSet).comp) {
+      let thiscopy: number[] = this.set.slice(0);
+      removeAll(thiscopy, (vals as SortedNumberSet).set);
+      removeAll(this.set, thiscopy);
+    } else {
+      this.comp = false;
+      let valscopy: number[] = (vals as SortedNumberSet).set.slice(0)
+      removeAll(valscopy, this.set);
+      this.set = valscopy;
+    }
+  }
+
+  addAll(vals: NumberSet): void {
+    if (!this.comp && !(vals as SortedNumberSet).comp) {
+      addAll(this.set, (vals as SortedNumberSet).set);
+    } else if (this.comp && !(vals as SortedNumberSet).comp) {
+      removeAll(this.set, (vals as SortedNumberSet).set);
+    } else if (!this.comp && (vals as SortedNumberSet).comp) {
+      this.comp = true;
+      let valscopy: number[] = (vals as SortedNumberSet).set.slice(0)
+      removeAll(valscopy, this.set);
+      this.set = valscopy;
+    } else {
+      let thiscopy: number[] = this.set.slice(0);
+      removeAll(thiscopy, (vals as SortedNumberSet).set);
+      removeAll(this.set, thiscopy);
+    }
+  }
+
+  getNumbers(a:number, b:number): List<number> {
+    if (this.comp) {
+      let arr: number[] = [];
+      let i = a;
+
+      // a loop that adds all numbers from a to b into an array
+      while (i <= b) {
+        // stays in the loop until i is greater than b
+        arr.push(i); // add i to the array
+        i = i + 1; // increment i
+      }
+
+      // remove all numbers in this.set from the array (getting the complements)
+      removeAll(arr, this.set); 
+
+      // return the array as a list
+      return explode_array(arr);
+    } else { 
+      return explode_array(this.set);
+    }
+  }
+
+  complement(): void {
+    this.comp = !this.comp;
+  }
+}
+
+// TODO (3c): implement makeSortedNumberSet
+/**
+ * Returns the given list of numbers in a SortedNumberSet.
+ * @param vals list of numbers to include in the set (and nothing else)
+ * @returns a SortedNumberSet S such that S is sorted and only contains unique elements
+ */
+export function makeSortedNumberSet(vals: List<number>): NumberSet {
+  return new SortedNumberSet(compact_list(vals));
+}

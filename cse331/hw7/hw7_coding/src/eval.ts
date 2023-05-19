@@ -1,6 +1,7 @@
 import { List, nil, cons, explode_array } from './list';
 import { Query } from './query';
-import { NumberSet, makeBooleanNumberSet } from './number_set';
+import { NumberSet} from './number_set';
+import { makeSortedNumberSet } from './sorted_set';
 
 
 /**
@@ -19,11 +20,11 @@ import { NumberSet, makeBooleanNumberSet } from './number_set';
 export function evaluate(query: Query, min: number, max: number): NumberSet {
   // TODO (1f, 3g): update to only use NumberSet interface and factory functions
   if (query === "even") {
-    return makeBooleanNumberSet(getEvens(min, max));
+    return makeSortedNumberSet(getEvens(min, max));
   } else if (query === "prime") {
-    return makeBooleanNumberSet(getPrimes(min, max));
+    return makeSortedNumberSet(getPrimes(min, max));
   } else if (query === "fibonacci") {
-    return makeBooleanNumberSet(getFibonacci(min, max));
+    return makeSortedNumberSet(getFibonacci(min, max));
   } else if (query.kind === "not") {
     // TODO (5e): change to use .complement() from NumberSet instead
     return complement(evaluate(query.arg, min, max), min, max);
@@ -47,7 +48,7 @@ export function evaluate(query: Query, min: number, max: number): NumberSet {
 // Returns all the numbers between min & max and not in set.
 function complement(set: NumberSet, min: number, max: number): NumberSet {
   // TODO (1f, 3g): update to only use NumberSet interface and factory functions
-  const result = makeBooleanNumberSet(getAll(min, max));
+  const result = makeSortedNumberSet(getAll(min, max));
   result.removeAll(set);
   return result;
 }

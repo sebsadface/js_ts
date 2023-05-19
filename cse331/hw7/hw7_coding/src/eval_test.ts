@@ -7,16 +7,16 @@ import { getAll, getEvens, getPrimes, getFibonacci, evaluate } from './eval';
 describe('eval', function() {
 
   it('evaluate', function() {
-    // TODO (1e): change to use .getNumbers()
+    // TODO (1e): change to use .getNumbers(1, 10)
     // TODO (5e): pass range arguments to getNumbers calls.
     //            For each case, use the min and max passed to evaluate
-    assert.deepEqual(evaluate(even, 1, 10).getNumbers(),
+    assert.deepEqual(evaluate(even, 1, 10).getNumbers(1, 10),
         explode_array([2, 4, 6, 8, 10]));
-    assert.deepEqual(evaluate(not(even), 1, 10).getNumbers(),
+    assert.deepEqual(evaluate(not(even), 1, 10).getNumbers(1, 10),
         explode_array([1, 3, 5, 7, 9]));
-    assert.deepEqual(evaluate(and(not(even), fibonacci), 1, 15).getNumbers(),
+    assert.deepEqual(evaluate(and(not(even), fibonacci), 1, 15).getNumbers(1, 15),
         explode_array([1, 3, 5, 13]));
-    assert.deepEqual(evaluate(or(even, not(prime)), 2, 15).getNumbers(),
+    assert.deepEqual(evaluate(or(even, not(prime)), 2, 15).getNumbers(2, 15),
         explode_array([2, 4, 6, 8, 9, 10, 12, 14, 15]));
   });
 

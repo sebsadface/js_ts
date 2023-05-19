@@ -185,56 +185,111 @@
 \begin{question}{2. From Loop to Nuts (24 points)}
     \begin{part}
         \begin{lstlisting}[language=C++]
-            let R: string[][] = [];
             let i: number = 0;
-        //  {{P1: R = [] and i = 0}}
-        //  {{Inv: R = replace(A[0 .. i - 1], M)}}
-            while (i !== A.length) {
-                const val = M.get(A[i]);
-                if (val !== undefined) {
-        //       {{P2: Inv and val = M[A[i]] and A[i] is in M and i != A.length}}
-        //       {{Q2: R ++ val = replace(A[0..i], M)}}
-                    R.push(val);
+            let j: number = 0;
+            let k: number = 0;
+        //  {{P1: i = 0, j = 0, and k = 0}}
+        //  {{Inv: L[0..k-1] = without(L0[0..i-1], R) and 
+        //         L[k..n-1] = L0[k..n-1] and R[j-1] < L[i]}}
+            while (i !== L.length) {
+                if ((j === R.length) || (L[i] < R[j])) {
+        //       {{P2: Inv, i != n, and (j = m or L[i] < R[j])}}
+        //       {{Q2: L[0..k-1] ++ [L[i]] = without(L0[0..i], R) and 
+        //             L[k+1..n-1] = L0[k+1..n-1] and R[j-1] < L[i+1]}}
+                    L[k] = L[i];
+                    i = i + 1;
+                    k = k + 1;
+                } else if (L[i] > R[j]) {
+        //       {{P3: Inv, i != n, and (j != m and L[i] > R[j])}}
+        //       {{Q3:  L[0..k-1] = without(L0[0..i-1], R) and 
+        //              L[k..n-1] = L0[k..n-1] and R[j] < L[i]}}
+                    j = j + 1;
                 } else {
-        //       {{P3: Inv and val = M[A[i]] and A[i] is not M and i != A.length}}
-        //       {{Q3: R ++ [A[i]] = replace(A[0..i], M)}}
-                    R.push([A[i]]);
+        //          {{P4: Inv, i != n, and (j != m and L[i] = R[j])}}
+        //          {{Q4:  L[0..k-1] = without(L0[0..i], R) and 
+        //                 L[k..n-1] = L0[k..n-1] and R[j] < L[i+1]}}
+                    i = i + 1;
+                    j = j + 1;  
                 }
-                i = i + 1;
             }
-        //  {{P4: R = replace(A[0 .. i - 1], M) and i = A.length}}
-        //  {{Q4: R = replace(A, M)}}
+        //  {{P5: Inv and i = n}}
+        //  {{Q5: L[0..k-1] = without(L0, R)}}
         \end{lstlisting}
     \end{part}
 \newpage
     \begin{part}
         \begin{answer}
-            For Inv:
+            \textbf{For Inv:}
             \begin{align*}
-                R &= [] \tag{given in $P_1$}\\
-                &= \text{replace}([], M) \tag{Def of \text{replace}}\\
-                &= \text{replace}(A[0 .. -1], M) \tag{since the range $0 .. -1$ is empty} \\
-                &= \text{replace}(A[0 .. 0 - 1], M) \\
-                &= \text{replace}(A[0 .. i - 1], M) \tag{since $i = 0$}
+                L[0..k-1] &= L[0..-1] \tag{since $k = 0$}\\
+                &= [] \tag{since $L[0..-1]$ is empty}\\
+                &= \text{without}([], R) \tag{Def of without}\\
+                &= \text{without}(L_0[0..-1], R) \tag{since $L_0[0..-1]$ is empty}\\
+                &= \text{without}(L_0[0..0-1], R) \\
+                &= \text{without}(L_0[0..i-1], R) \tag{since $i = 0$}\\ \\
+                L[k..n-1] &= L[0..n-1] \tag{since $k = 0$} \\
+                &= L_0[0..n-1] \tag{by definition $L_0$ is the initial value of $L$} \\\\
+                R[j-1] &= R[0-1] \tag{since $j = 0$}\\
+                &= R[-1] \\
+                &< L[i] \tag{since $R[-1]$ is undefined, this is vacuously true}
             \end{align*}
-            For $Q_2$:
+            \textbf{For $Q_2$:} \\
+            Case 1 ($j = m$): 
             \begin{align*}
-                R \mdoubleplus \text{val} &= \text{replace}(A[0 .. i - 1], M) \mdoubleplus \text{val} \tag{since $R = \text{replace}(A[0 .. i - 1], M)$}\\
-                &= \text{replace}(A[0 .. i - 1], M) \mdoubleplus M[A[i]] \tag{since val $= M[A[i]]$}\\
-                &= \text{replace}(A[0 .. i - 1] \mdoubleplus A[i], M) \tag{Def of replace and since $A[i]$ is in $M$}\\
-                &= \text{replace}(A[0 .. i], M) \tag{Def of $\mdoubleplus$ (i.e. $A[0 .. i - 1] \mdoubleplus A[i] = A[0 .. i]$)}
+                 L[0..k-1] \mdoubleplus [L[i]] &= L[0..k-1] \mdoubleplus [L_0[i]] \tag{since $ 0 \le i \le n - 1$ and $L[k..n-1] = L_0[k..n-1]$ so $L[i] = L_0[i]$} \\
+                 &= \text{without}(L_0[0..i-1], R) \mdoubleplus [L_0[i]] \tag{since $L[0..k-1] = \text{without}(L_0[0..i-1],R)$}\\
+                 &= \text{without}(L_0[0..i-1], R[0..m-2] \mdoubleplus [R[m-1]]) \mdoubleplus [L_0[i]] \tag{Def of $\mdoubleplus$}\\
+                 &= \text{without}(L_0[0..i-1], R[0..m-2] \mdoubleplus [R[j-1]]) \tag{since $j = m$}\\
+                 &= \text{without}(L_0[0..i-1]\mdoubleplus [L_0[i]], R[0..m-2] \mdoubleplus [R[j-1]]) \tag{since $R[j-1] < L[i]$ and by the definition of without}\\
+                 &= \text{without}(L_0[0..i], R[0..m-2] \mdoubleplus [R[j-1]]) \tag{Def of $\mdoubleplus$} \\
+                 &= \text{without}(L_0[0..i], R[0..m-2] \mdoubleplus [R[m-1]]) \tag{since $j = m$}\\
+                 &= \text{without}(L_0[0..i], R) \tag{Def of $\mdoubleplus$} \\\\
+                 L[k+1..n-1] = L_0[k+1..n-1] \tag{since $L[k..n-1] = L_0[k..n-1]$} \\\\
+                 R[j-1] < L[i+1] \tag{since $L$ is sorted and $R[j-1] < L[i]$}
             \end{align*}
-            Similarly, for $Q_3$:
+            \end{answer}
+        \end{part}
+        \begin{part}[b continued]
+            \begin{answer}
+            Case 2 ($L[i] < R[j]$):
             \begin{align*}
-                R \mdoubleplus [A[i]] &= \text{replace}(A[0 .. i - 1], M) \mdoubleplus [A[i]] \tag{since $R = \text{replace}(A[0 .. i - 1], M)$}\\
-                &= \text{replace}(A[0 .. i - 1] \mdoubleplus A[i], M) \tag{Def of replace and since $A[i]$ is in $M$}\\
-                &= \text{replace}(A[0 .. i], M) \tag{Def of $\mdoubleplus$ (i.e. $A[0 .. i - 1] \mdoubleplus A[i] = A[0 .. i]$)}
+                L[0..k-1] \mdoubleplus [L[i]] &= L[0..k-1] \mdoubleplus [L_0[i]] \tag{since $ 0 \le i \le n - 1$ and $L[k..n-1] = L_0[k..n-1]$ so $L[i] = L_0[i]$} \\
+                &= \text{without}(L_0[0..i-1], R) \mdoubleplus [L_0[i]] \tag{since $L[0..k-1] = \text{without}(L_0[0..i-1],R)$}\\
+                &= \text{without}(L_0[0..i-1], R[0..j-1]) \mdoubleplus [L_0[i]] \\ &\text{(since $L$ is sorted and $L[i] < R[j]$ so $L[i - 1] < R[j]$ and}\\ &\text{since the rest of $R$ does not matter)}\\
+                &= \text{without}(L_0[0..i-1], R[0..j-1]) \mdoubleplus [L_0[i]]\\
+                &= \text{without}(L_0[0..i-1], R[0..j-2] \mdoubleplus [R[j-1]]) \mdoubleplus [L_0[i]] \tag{Def of $\mdoubleplus$}\\
+                &= \text{without}(L_0[0..i-1]\mdoubleplus [L_0[i]], R[0..j-2] \mdoubleplus [R[j-1]]) \tag{since $R[j-1] < L[i]$ and by the definition of without} \\
+                &= \text{without}(L_0[0..i], R[0..j-1])\tag{Def of $\mdoubleplus$}\\
+                &= \text{without}(L_0[0..i], R) \tag{since $L[i - 1] < R[j]$ and the rest of $R$ does not matter}\\\\
+                L[k+1..n-1] = L_0[k+1..n-1] \tag{since $L[k..n-1] = L_0[k..n-1]$} \\\\
+                R[j-1] < L[i+1] \tag{since $L$ is sorted and $R[j-1] < L[i]$}
+           \end{align*}
+            \textbf{For $Q_3$:}
+            \begin{align*}
+                L[0..k-1] &= \text{without}(L_0[0..i-1], R) \tag{as listed in $P_3$}\\\\
+                L[k..n-1] &= L_0[k..n-1] \tag{as listed in $P_3$}\\\\
+                R[j] &< L[i] \tag{since $L[i] > R[j]$}
             \end{align*}
-            For $Q_4$:
+        \end{answer}
+    \end{part}
+    \newpage
+    \begin{part}[b continued]
+        \begin{answer}
+            \textbf{For $Q_4$:}
             \begin{align*}
-                R &= \text{replace}(A[0 .. i - 1], M) \tag{given in $P_4$}\\
-                &= \text{replace}(A[0 .. A.\text{length} - 1], M) \tag{since $i = A.$length}\\
-                &= \text{replace}(A, M) \tag{since $A[0 .. A.\text{length} - 1] = A$}
+                L[0..k-1] &= \text{without}(L_0[0..i-1], R) \tag{as listed in $P_4$}\\
+                &= \text{without}(L_0[0..i-1], R[0..j-1]) \\ &\text{(since $ 0 \le i \le n - 1$ and $L[k..n-1] = L_0[k..n-1]$ so $L[i] = L_0[i]$ and } \\ &\text{since $L[i] = R[j]$ and $i < n$ and $L$ is sorted, so $L[i - 1] < R[j]$ therefore }\\ &\text{$L_0[i - 1] < R[j]$ and since the rest of $R$ does not matter)}\\
+                &= \text{without}(L_0[0..i-1] \mdoubleplus [L_0[i]], R[0..j-1] \mdoubleplus [R[j]]) \tag{since $L[i] = L_0[i] = R[j]$ and by the definition of without}\\
+                &= \text{without}(L_0[0..i], R[0..j]) \tag{Def of $\mdoubleplus$}\\
+                &= \text{without}(L_0[0..i], R) \tag{since $L[i] = L_0[i] = R[j]$ and the rest of $R$ does not matter}\\\\
+                L[k..n-1] &= L_0[k..n-1] \tag{as listed in $P_4$}\\\\
+                R[j] < L[i+1] \tag{since $R[j-1] < L[i]$ and $L, R$ are sorted and only contain distinct elements}
+            \end{align*}
+            \textbf{For $Q_5$:}
+            \begin{align*}
+                L[0..k-1] &= \text{without}(L_0[0..i-1], R) \tag{as listed in $P_5$}\\
+                &=\text{without}(L_0[0..n-1], R) \tag{since $i = n$}\\
+                &=\text{without}(L_0, R) \tag{Def of $L_0$}
             \end{align*}
         \end{answer}
     \end{part}
@@ -243,167 +298,31 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%% Question# 3 %%%%%%%%%%%%%%%%%%%%%%%%
 \begin{question}{3. Jumping Through Loops (12 points)}
-    \begin{part}
+    \begin{part}[f]
         \begin{answer}
-            Let $R$ be any arry of arrays, and let $P(A)$ be the claim "concat$(R \mdoubleplus [A]) = $concat$(R) \mdoubleplus A$ for any array $A$". \\
-            We show $P(A)$ holds for any array $B \in A$ by structural induction.\\
-            \textbf{Base Case ($A = []$):} 
-            \begin{align*}
-                \text{concat}(R \mdoubleplus [[]]) &= \text{concat}(R) \tag{Def of concat}\\
-                &= \text{concat}(R) \mdoubleplus [] \tag{since $[]$ is an empty array}
-            \end{align*}
-            \textbf{Inductive Hypothesis:} Suppose $P(B)$ holds for an arbitrary array $B$ \\
-            \textbf{Inductive Step ($P(B \mdoubleplus [w])$):} Let $w$ be an arbitrary element.
-            \begin{align*}
-                \text{concat}(R \mdoubleplus [B \mdoubleplus [w]]) &= \text{concat}(R \mdoubleplus [B]) \mdoubleplus [w] \tag{Def of concat} \\
-                &= \text{concat}(R) \mdoubleplus B \mdoubleplus [w] \tag{Inductive Hypothesis} \\
-                &= \text{concat}(R) \mdoubleplus (B \mdoubleplus [w])
-            \end{align*}
-
-            \textbf{Conclusion:} Therefore, $P(A)$ holds for any array $A$ by the principle of induction.
+            Despite it is simpler to implement and more performant, returning the internal array directly can expose the internal state of the SortedNumberSet, 
+            which can potentially be modified from outside of the class. An external client could alter the array, potentially violating the representation 
+            invariant of the SortedNumberSet, which can cause horrible hard-to-find bugs. 
         \end{answer}
     \end{part}
 
-    \begin{part}
-            \begin{lstlisting}[language=C++]
-                let S: string[] = [];
-                let j: number = 0;
-            //  {{P1: S = [] and j = 0}}
-            //  {{Inv1: S = concat(R[0..j-1])}}
-                while (j !== R.length) {
-                    const A: string[] = R[j];
-                    let k: number = 0;
-            //      {{P2: Inv1, A = R[j], k = 0, and j !== R.length}}
-            //      {{Inv2: S = concat(R[0..j-1]) ++ A[0..k-1]}}
-                    while (k !== A.length) {
-            //          {{P3: Inv2 and k !== A.length}}
-            //          {{Q3: S ++ A[k] = concat(R[0..j-1]) ++ A[0..k]}}
-                        S.push(A[k]);
-                        k = k + 1;
-                    }
-            //      {{P4: S = concat(R[0..j-1]) ++ A[0..k-1] and k = A.length}}
-            //      {{Q4: S = concat(R[0..j-1]) ++ A}}
-                    j = j + 1;
-                }
-            //  {{P5: S = concat(R[0..j-1]) and j = R.length}}
-            //  {{Q5: S = concat(R)}}
-            \end{lstlisting}
-    \end{part}
-\newpage
-    \begin{part}
+    \begin{part}[g]
         \begin{answer}
-            For Inv1:
-            \begin{align*}
-                S &= [] \tag{given in $P_1$}\\
-                &= \text{concat}([]) \tag{Def of \text{concat}}\\
-                &= \text{concat}(R[0..-1]) \tag{since the range $0 .. -1$ is empty} \\
-                &= \text{concat}(R[0 .. 0 - 1]) \\
-                &= \text{concat}(R[0 .. j - 1]) \tag{since $j = 0$}
-            \end{align*}
-            For Inv2:
-            \begin{align*}
-                S &= \text{concat}(R[0..j-1]) \tag{given in $P_2$}\\
-                &= \text{concat}(R[0..j-1] \mdoubleplus [[]]) \tag{Def of concat}\\
-                &= \text{concat}(R[0..j-1] \mdoubleplus [A[0..-1]]) \tag{since the range $0 .. -1$ is empty}\\
-                &= \text{concat}(R[0..j-1] \mdoubleplus [A[0..0-1]]) \\
-                &= \text{concat}(R[0..j-1] \mdoubleplus [A[0..k-1]]) \tag{since $k = 0$}\\
-                &= \text{concat}(R[0..j-1]) \mdoubleplus A[0..k-1] \tag{as the fact that was proven in part (a)}\\
-            \end{align*}
-            For $Q_3$:
-            \begin{align*}
-                S \mdoubleplus A[k] &=  \text{concat}(R[0..j-1]) \mdoubleplus A[0..k-1] \mdoubleplus A[k] \tag{since $S = \text{concat}(R[0..j-1]) \mdoubleplus A[0..k-1]$}\\
-                &= \text{concat}(R[0..j-1]) \mdoubleplus (A[0..k-1] \mdoubleplus A[k]) \\
-                &= \text{concat}(R[0..j-1]) \mdoubleplus A[0..k] \tag{Def of $\mdoubleplus$ (i.e. $A[0 .. k - 1] \mdoubleplus A[k] = A[0 .. k]$)}
-            \end{align*}
-            For $Q_4$:
-            \begin{align*}
-                S &= \text{concat}(R[0..j-1]) \mdoubleplus A[0..k-1] \tag{given in $P_4$}\\
-                &= \text{concat}(R[0..j-1]) \mdoubleplus A[0..A.\text{length}-1] \tag{since $k = A.$length}\\
-                &= \text{concat}(R[0..j-1]) \mdoubleplus A \tag{since $A[0 .. A.\text{length} - 1] = A$}
-            \end{align*}
-            For $Q_5$:
-            \begin{align*}
-                R &= \text{concat}(R[0..j-1]) \tag{given in $P_5$}\\
-                &= \text{concat}(R[0..R.\text{length}-1]) \tag{since $j = R.$length}\\
-                &= \text{concat}(R) \tag{since $R[0 .. R.\text{length} - 1] = R$}
-            \end{align*}
+            Similar to part(f), if you return the internal List<number> directly, it would still expose the internal state of the SortedNumberSet object, 
+            which could be modified externally, potentially violating the representation invariant and cause horrible and hard-to-find bugs. Therefore, 
+            returning a copy or an immutable view of the internal structure would still be a better design choice.  
         \end{answer}
     \end{part}
+
 \end{question}
 
 %%%%%%%%%%%%%%%%%%%%%%%% Question# 5 %%%%%%%%%%%%%%%%%%%%%%%%
-\begin{question}{5. Words of a Feather Flock Together (20 points)}
-    \begin{part}
-            \begin{lstlisting}[language=C++]
-                let k: number = -1;
-        //      {{P1: k = -1}}
-        //      {{Inv1: there is no index 0 <= j <= k such that sub[i] = all[j+i]
-        //        for all i = 0..m-1}}
-                while (k + sub.length !== all.length) {
-                    k = k + 1;
-                    let l: = number = 0;
-        //          {{P2: k = k0 + 1, l = 0, k0 + m != n, and there is no index 
-        //            0 <= j <= k0 such that sub[i] = all[j+i] for all 
-        //            i = 0..m-1}}
-        //          {{Inv2: there is no index 0 <= j <= k-1 such that 
-        //            sub[i] = all[j+i] for all i = 0..m-1 and sub[i] = all[k+i] 
-        //            for all i = 0..l-1}}
-                    while (l !== sub.length && sub[l] === all[k + l]) {
-        //              {{P3: sub[i] = all[k+i] for all i = 0..l-1, l != m, 
-        //                and sub[l] = all[k+l]}}
-        //              {{Q3: sub[i] = all[k+i] for all i = 0..l}}
-                        l = l + 1;             
-                    }
-        //          {{P4: Inv2, and l = m or sub[l] != all[k+l]}}
-                    if (l === sub.length) {
-        //              {{P5: Inv2, and l = m}}
-        //              {{Q5: sub[i] = all[k+i] for all i = 0..m-1}}
-                        return true;
-                    }
-        //          {{P6: Inv2, sub[l] != all[k+l], and l != m}}
-        //          {{Q6: Inv1}}
-                }
-        //      {{P7: Inv1 and k + m = n}}
-        //      {{Q7: there is no index 0 <= j <= n-m such that sub[i] = all[j+i] 
-        //        for all i = 0..m-1}}
-                return false;
-            \end{lstlisting}
-    \end{part}
-
-    \begin{part}
-        \begin{answer}
-            For Inv1:\\\\
-             Setting $k = -1$ makes the range $ 0 \le j \le -1$, which is empty. Hence, Inv1 no longer makes any claims, so it is vacuously true.\\\\\\
-            For Inv2: \\\\
-            For the first part, since $k = k_0 + 1$, we know $k_0 = k - 1$. Since we know there is no index $0 \le j \le k_0$ such that sub[$i$] = all[$j+i$] for all $i = 0..m-1$, subsituting $k_0$
-             with $k - 1$, we get the fact that there is no index $0 \le j \le k - 1$ such that sub[$i$] = all[$j+i$] for all $i = 0..m-1$\\\\
-            For the second part, setting $l = 0$ makes the range $ i = 0..0-1$, which is empty. Hence, sub[$l$] = all[$k+i$] for all $i = 0..l-1$  no longer makes any claims, so it is vacuously true. \\\\\\
-            
-            For $Q_3$:\\\\
-            We can combine the two facts that sub$[i] =$ all$[k+i]$ for all $i = 0..l-1$ and sub$[l] = $ all$[k + l]$ (i.e. sub$[i] = $ all$[k + i]$ when $i = l$) in $P_3$, we get 
-            $Q_3$: sub$[i] =$ all$[k+i]$ for all $i = 0..l$\\\\\\
-            
-            For $Q_5$:
-            \begin{align*}
-                \text{sub}[i] &= \text{all}[k + i] \text{ for all } i = 0..l-1 \tag{given in $P_5$}\\
-                &= \text{all}[k + i] \text{ for all } i = 0..m-1 \tag{since $l = m$}
-            \end{align*}
-            For $Q_6$:\\\\
-            Since sub$[l] \ne$ all$[k+l]$, $l \ne m$, we know there is no index $k$ such that sub[$l$] = all[$k+l$] for $l \ne m$ $(l < m)$. Since we know there is no index $0 \le j \le k - 1$ such that sub[$i$] = all[$j+i$] for all $i = 0..m-1$,
-            combining this with the previous fact, we know that there is no index $0 \le j \le k$ such that sub[$i$] = all[$j+i$] for all $i = 0..m-1$ \\\\\\
-            For $Q_7$:\\\\
-            Since we know, from $P_7$, that $k + m = n$, we get $k = n -m$. Subsituting $k$ with $n - m$ in the known fact that there is no index $0 \le j \le k$ such that sub[$i$] = all[$j+i$] for all $i = 0..m-1$,
-            we get that there is no index $0 \le j \le n - m$ such that sub[$i$] = all[$j+i$] for all $i = 0..m-1$.
-        \end{answer}
-    \end{part}
+\begin{question}{6. Extra Credit: Size In the Back of Your Head (0 points)}
+    
 \end{question}
 
 %%%%%%%%%%%%%%%%%%%%%%%% Question# 7 %%%%%%%%%%%%%%%%%%%%%%%%
-\begin{question}{7. Extra Credit: She Wore a Raspberry Array (0 points)}
-    \begin{part}
-        \begin{answer}
-            
-        \end{answer}
-    \end{part}
+\begin{question}{7. Extra Credit: Nothing to Contain About (0 points)}
+   
 \end{question}
 \end{document}
