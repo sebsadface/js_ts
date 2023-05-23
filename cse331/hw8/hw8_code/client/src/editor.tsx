@@ -8,7 +8,7 @@ interface EditorProps {
   /** Initial state of the file. */
   initialState: Square;
   onSave: (root: Square) => void;
-  onClose: () => void;
+  onClose: (root: Square) => void;
 }
 
 
@@ -72,7 +72,7 @@ export class Editor extends Component<EditorProps, EditorState> {
                             <button name="save" onClick={() => this.props.onSave(this.state.root)}>Save</button>
                           </td>
                           <td>
-                            <button name="close" onClick={() => this.props.onClose()}>Close</button>
+                            <button name="close" onClick={() => this.props.onClose(this.state.root)}>Close</button>
                           </td>
                         </tr>
                       </table>
@@ -101,7 +101,7 @@ export class Editor extends Component<EditorProps, EditorState> {
                           </td>
                           <td></td>
                           <td>
-                            <button name="close" onClick={() => this.props.onClose()}>Close</button>
+                            <button name="close" onClick={() => this.props.onClose(this.state.root)}>Close</button>
                           </td>
                         </tr>
                   </table>
@@ -135,7 +135,6 @@ export class Editor extends Component<EditorProps, EditorState> {
     }
     const selected: Square = retrieveSq(this.state.root, this.state.selected);
     const targetPath: Path = getParent(this.state.selected);
-    console.log(targetPath)
     const newroot: Square = replaceSq(this.state.root, targetPath, selected);
     this.setState({root: newroot, selected: undefined});
   };

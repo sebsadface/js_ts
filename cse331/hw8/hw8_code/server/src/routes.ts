@@ -32,24 +32,19 @@ type File = {
 };
 
 // Map from file name to file contents.
-const files: Map<string, File> = new Map();
+let files: Map<string, File> = new Map();
 
 // Saves a file with the given name and content.
 // Returns the file that was saved.
-export function saveFile(req: Request, res: Response) {
+export function saveFile(req: Request, res: Response) { 
   const name = first(req.query.name);
   if (name === undefined || typeof name !== 'string') {
     res.status(500).send('missing "name" parameter');
     return;
   } 
 
-  if (files.has(name)) {
-    res.status(400).send(`file with name ${name} already exists`);
-    return;
-  }
-
-  const content = first(req.body.content);
-  if (content === undefined || typeof content !== 'string') {
+  const content = req.body.content;
+  if (content === undefined) {
     res.status(500).send('missing "content" body');
     return;
   }
@@ -76,7 +71,7 @@ export function loadFile(req: Request, res: Response) {
     return;
   }
 
-  res.send(files.get(name));
+  res.json(files.get(name));
 }
 
 // Returns a list of all the named save files.
