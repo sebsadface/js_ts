@@ -138,7 +138,7 @@ export class App extends Component<{}, AppState> {
   handleClose = (root: Square): void => {
     this.handleSave(root);
     fetch("/api/list").then(this.handleList).catch(this.handleServerError);
-    this.setState({fileName: undefined});
+    this.setState({fileName: undefined, square: split(solid("blue"), solid("orange"), solid("purple"), solid("red"))});
   }
 
   handleSaveResponse = (res: Response): void => {
