@@ -10,6 +10,7 @@ interface JoinDraftState {
   drafter?: string;
 }
 
+// Allows a user to join an existing draft.
 export class JoinDraft extends Component<JoinDraftProps, JoinDraftState> {
 
   constructor(props: JoinDraftProps) {
@@ -48,14 +49,17 @@ export class JoinDraft extends Component<JoinDraftProps, JoinDraftState> {
   }
 
 
+  // Handle changes to the Drafter fields by updating the state.
   handleDrafter = (event: React.ChangeEvent<HTMLInputElement>): void => {
     this.setState({drafter: event.target.value});
   }
 
+  // Handle changes to the Draft id fields by updating the state.
   handleId = (event: React.ChangeEvent<HTMLInputElement>): void => {
     this.setState({id: parseInt(event.target.value)});
   }
 
+  // Handle the join button by sending a id check request to the server.
   handleJoin = (): void => {
     if (this.state.id === undefined) {
       console.error("Join draft failed: id undefined");
@@ -68,6 +72,7 @@ export class JoinDraft extends Component<JoinDraftProps, JoinDraftState> {
     
   }
 
+  // Handle the response to a join request.
   handleJoinResponse = (res: Response): void => {
     if (res.status === 200) {
         res.text().then(this.handleJoinSuccess).catch(this.handleServerError);
@@ -76,6 +81,7 @@ export class JoinDraft extends Component<JoinDraftProps, JoinDraftState> {
     }
   }
 
+  // Handle the response to a join request, jump to the details page if join succeeds.
   handleJoinSuccess = (val: any): void => {
     if (typeof val !== "string" || val === null) {
         console.error("Join draft failed: invalid response to checkid", val);
@@ -96,6 +102,7 @@ export class JoinDraft extends Component<JoinDraftProps, JoinDraftState> {
     }
   }
 
+  // Handle server errors by logging to the console.
   handleServerError = (res: Response): void => {
     console.error("unknown error from server:", res.statusText);
   }

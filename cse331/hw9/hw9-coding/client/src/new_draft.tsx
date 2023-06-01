@@ -13,6 +13,7 @@ interface NewDraftState {
   drafters?: string;  
 }
 
+// Allows a user to create a new draft.
 export class NewDraft extends Component<NewDraftProps, NewDraftState> {
 
   constructor(props: NewDraftProps) {
@@ -68,23 +69,27 @@ export class NewDraft extends Component<NewDraftProps, NewDraftState> {
             </table>)
   }
 
-
+  // Handle changes to the Drafter field by updating the state.
   handleDrafter = (event: React.ChangeEvent<HTMLInputElement>): void => {
     this.setState({drafter: event.target.value});
   }
 
+  // Handle changes to the Rounds field by updating the state.
   handleRounds = (event: React.ChangeEvent<HTMLInputElement>): void => {
     this.setState({rounds: parseInt(event.target.value)});
   }
 
+  // Handle changes to the Options field by updating the state.
   handleOptions = (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
     this.setState({options: event.target.value});
   }
 
+  // Handle changes to the Drafters field by updating the state.
   handleDrafters = (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
     this.setState({drafters: event.target.value});
   }
 
+  // Handle the Create button by sending a create request to the server.
   handleCreate = (): void => {
     if (this.state.rounds === undefined) {
       console.error("Create draft failed: rounds undefined");
@@ -115,6 +120,7 @@ export class NewDraft extends Component<NewDraftProps, NewDraftState> {
     }).then(this.handleCreateResponse).catch(this.handleServerError);
   }
 
+  // Handles the response from the server /create endpoint.
   handleCreateResponse = (res: Response): void => {
     if (res.status === 200) {
       res.json().then(this.handleCreateJson).catch(this.handleServerError);
@@ -123,6 +129,7 @@ export class NewDraft extends Component<NewDraftProps, NewDraftState> {
     }
   }
 
+  // Handles the JSON data from the server /create endpoint.
   handleCreateJson = (val: any): void => {
     if (typeof val !== "object" || val === null) {
       console.error("bad data from server /create: not a record", val);
@@ -137,6 +144,7 @@ export class NewDraft extends Component<NewDraftProps, NewDraftState> {
     this.props.onShow(val.id, this.state.drafter);
   }
 
+  // Handles a server error by logging it to the console.
   handleServerError = (res: Response): void => {
     console.error("unknown error from server:", res.statusText);
   }

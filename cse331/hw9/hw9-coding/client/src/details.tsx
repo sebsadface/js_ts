@@ -16,6 +16,7 @@ interface DraftDetailsState {
     drafters?: ReadonlyArray<string>;
 }
 
+// Shows the details of a draft, and allows a drafter to make picks.
 export class DraftDetails extends Component<DraftDetailsProps, DraftDetailsState> {
 
   constructor(props: DraftDetailsProps) {
@@ -60,7 +61,7 @@ export class DraftDetails extends Component<DraftDetailsProps, DraftDetailsState
     }
   }
 
-  
+  // Displays the drafter status of the current user.
   displayDrafter =(): JSX.Element => {
     if (this.props.drafter === undefined || !this.state.drafters?.includes(this.props.drafter)) {
         return (<td>
@@ -73,10 +74,12 @@ export class DraftDetails extends Component<DraftDetailsProps, DraftDetailsState
     }
   }
 
+  // Automatically refreshes the page every second.
   autoRefresh = (): void => {
     setInterval(this.handleRefresh, 1000);
   }
    
+  // Displays the status of the draft.
   displayStatus = (): JSX.Element[] => {
     if (this.state.complete) {
         return ([
@@ -142,6 +145,7 @@ export class DraftDetails extends Component<DraftDetailsProps, DraftDetailsState
     }
   }
 
+  // Handles a pick by the current drafter.
   handlePick = (): void => {
     if (this.state.currentPick === "--Please pick an item--") {
         console.error("Draft failed: no item selected");
@@ -162,6 +166,7 @@ export class DraftDetails extends Component<DraftDetailsProps, DraftDetailsState
     this.setState({currentPick: "--Please pick an item--"});
   }
 
+  // Handles a selection of an item to pick.
   handleSelect = (event: React.ChangeEvent<HTMLSelectElement>): void => {
     this.setState({currentPick: event.target.value});
   }
@@ -179,6 +184,7 @@ export class DraftDetails extends Component<DraftDetailsProps, DraftDetailsState
     }
   }
 
+  // Handles the response from the server /list endpoint.
   handleListJson = (val: any): void => {
     if (typeof val !== "object" || val === null) {
       console.error("bad data from server /list: not a record", val);
@@ -218,6 +224,7 @@ export class DraftDetails extends Component<DraftDetailsProps, DraftDetailsState
                   drafters: val.drafters});
   }
 
+  // Handles a server error.
   handleServerError = (res: Response): void => {
     console.error("unknown error talking to server: ", res.statusText);
   }

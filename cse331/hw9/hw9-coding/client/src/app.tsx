@@ -38,10 +38,12 @@ export class App extends Component<{}, AppState> {
     }
   };
 
+  // Handle the back button inside the details page by updating the state.
   handleBack = (): void => {
     this.setState({page: "main"});
   }
 
+  // Handle the create/join button inside the new draft and join draft pages by updating the state.
   handleShow = (id: number, drafter: string | undefined): void => {
     this.setState({page: "details", id: id, drafter: drafter});
   }
