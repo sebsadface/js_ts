@@ -1,17 +1,5 @@
 import { Request, Response } from "express";
 
-
-/** Returns a list of all the named save files. */
-// export function Dummy(req: Request, res: Response) {
-//   const name = first(req.query.name);
-//   if (name === undefined) {
-//     res.status(400).send('missing "name" parameter');
-//   } else {
-//     res.json(`Hi, ${name}`);
-//   }
-// }
-
-
 // Helper to return the (first) value of the parameter if any was given.
 // (This is mildly annoying because the client can also give mutiple values,
 // in which case, express puts them into an array.)
@@ -24,6 +12,7 @@ function first(param: any): string|undefined {
     return undefined;
   }
 }
+
 
 type DraftPick = {
   num: number,
@@ -46,12 +35,20 @@ type Draft = {
   currentRound: number
 }
 
+// a map from draft id to drafts
 const drafts: Map<number, Draft> = new Map();
 
+/**
+ * Process a list draft request and send a respond with a draft with the given id.
+ * @param req  the request with the id parameter
+ * @param res the draft with the given id, or Bad Request if no such draft exists
+ * @requires req.query.id is not undefined, is a string, and is a valid draft id.
+ * @effects res is sent with the draft with the given id, or Bad Request if no such draft exists
+ */
 export function listDraft(req: Request, res: Response) {
   const id = first(req.query.id);
   if (id === undefined || typeof id !== 'string') {
-    res.status(404).send('missing "id" parameter');
+    res.status(400).send('missing "id" parameter');
     return;
   }
 
@@ -64,6 +61,15 @@ export function listDraft(req: Request, res: Response) {
   res.send(draft);
 }
 
+/**
+ * Process a pick in draft request and send a respond with the updated draft with the given id.
+ * @param req the request with the id, drafter, and option parameters
+ * @param res the updated draft with the given id, or Bad Request if no such draft exists
+ * @requires req.query.id is not undefined, is a string, and is a valid draft id.
+ * @requires req.query.drafter is not undefined, is a string, and is a valid drafter.
+ * @requires req.query.option is not undefined, is a string, and is a valid option.
+ * @effects res is sent with the updated draft with the given id, or Bad Request if no such draft exists
+ */
 export function pickInDraft(req: Request, res: Response) {
   const id = first(req.query.id);
   if (id === undefined || typeof id !== 'string') {
@@ -119,6 +125,15 @@ export function pickInDraft(req: Request, res: Response) {
   res.send(draft);
 }
 
+/**
+ * Process a create draft request and send a respond with the created draft.
+ * @param req the request with the rounds, drafters, and options parameters
+ * @param res the created draft, or Bad Request if the request is invalid
+ * @requires req.query.rounds is not undefined, is a string, and is a valid number of rounds
+ * @requires req.body.drafters is not undefined, is a string, and is a string of drafters seperated by newlines '\n'
+ * @requires req.body.options is not undefined, is a string, and is a string of options seperated by newlines '\n'
+ * @effects res is sent with the created draft, or Bad Request if the request is invalid
+ */
 export function createDraft(req: Request, res: Response) {
   const rounds = first(req.query.rounds);
   if (rounds === undefined || typeof rounds !== 'string') {
@@ -153,6 +168,13 @@ export function createDraft(req: Request, res: Response) {
   res.send(draft);
 }
 
+/**
+ * Process a check id request and send a respond with whether the draft with the given id exists.
+ * @param req the request with the id parameter
+ * @param res whether the draft with the given id exists
+ * @requires req.query.id is not undefined, is a string, and is a valid draft id.
+ * @effects res is sent with whether the draft with the given id exists
+ */ 
 export function checkId(req: Request, res: Response) {
   const id = first(req.query.id);
   if (id === undefined || typeof id !== 'string') {
@@ -168,6 +190,10 @@ export function checkId(req: Request, res: Response) {
   }
 }
 
+/**
+ * Generate a unique id for a draft.
+ * @returns a unique id for a draft
+ */
 function idGenerator(): number {
   return drafts.size;
 }

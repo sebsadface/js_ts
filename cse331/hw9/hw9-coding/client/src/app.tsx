@@ -11,6 +11,7 @@ interface AppState {
  drafter?: string;
 }
 
+// Top-level component that displays the appropriate page.
 export class App extends Component<{}, AppState> {
 
   constructor(props: any) {
@@ -40,7 +41,7 @@ export class App extends Component<{}, AppState> {
   handleBack = (): void => {
     this.setState({page: "main"});
   }
-  
+
   handleShow = (id: number, drafter: string | undefined): void => {
     this.setState({page: "details", id: id, drafter: drafter});
   }

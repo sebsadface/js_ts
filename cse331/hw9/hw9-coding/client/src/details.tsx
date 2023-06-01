@@ -13,6 +13,7 @@ interface DraftDetailsState {
     complete: boolean;
     currentPick: string;
     currentDrafter?: string;
+    drafters?: ReadonlyArray<string>;
 }
 
 export class DraftDetails extends Component<DraftDetailsProps, DraftDetailsState> {
@@ -36,6 +37,7 @@ export class DraftDetails extends Component<DraftDetailsProps, DraftDetailsState
                     <td colSpan={3}>
                         <h2>Status of Draft {this.props.id}</h2>
                     </td>
+                    {this.displayDrafter()}
                 </tr>
                     <tr>
                         <td>
@@ -58,8 +60,21 @@ export class DraftDetails extends Component<DraftDetailsProps, DraftDetailsState
     }
   }
 
+  
+  displayDrafter =(): JSX.Element => {
+    if (this.props.drafter === undefined || !this.state.drafters?.includes(this.props.drafter)) {
+        return (<td>
+            <th>You are a viewer of this draft.</th>
+        </td>);
+    } else {
+        return (<td>
+            <th>You are drafter: {this.props.drafter}</th>
+        </td>);
+    }
+  }
+
   autoRefresh = (): void => {
-    setInterval(this.handleRefresh, 5000);
+    setInterval(this.handleRefresh, 1000);
   }
    
   displayStatus = (): JSX.Element[] => {
@@ -69,6 +84,10 @@ export class DraftDetails extends Component<DraftDetailsProps, DraftDetailsState
                 <td colSpan={3}>
                     Draft is complete!
                 </td>
+                <td></td>
+            <td>
+                <button name="back" onClick={this.props.onBack}>Back</button>
+            </td>
             </tr>
         ]);
     } if (this.props.drafter === undefined || this.state.currentDrafter !== this.props.drafter) {
@@ -140,6 +159,7 @@ export class DraftDetails extends Component<DraftDetailsProps, DraftDetailsState
                         "&option=" + encodeURIComponent(this.state.currentPick);
 
     fetch(url).then(this.handleList).catch(this.handleServerError);
+    this.setState({currentPick: "--Please pick an item--"});
   }
 
   handleSelect = (event: React.ChangeEvent<HTMLSelectElement>): void => {
@@ -194,7 +214,8 @@ export class DraftDetails extends Component<DraftDetailsProps, DraftDetailsState
     }
 
     this.setState({picks: picks, availableOps: availableOps, currentRound: val.currentRound,
-                   complete: val.complete, currentDrafter: val.currentDrafter});
+                   complete: val.complete, currentDrafter: val.currentDrafter,
+                  drafters: val.drafters});
   }
 
   handleServerError = (res: Response): void => {
