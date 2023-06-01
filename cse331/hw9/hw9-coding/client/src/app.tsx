@@ -1,23 +1,26 @@
 import React, { Component } from "react";
 import { NewDraft } from "./new_draft";
 import { JoinDraft } from "./join_draft";
+import { DraftDetails } from "./details";
 
-type Page = "main" | "pick"
+type Page = "main" | "details"
 
 interface AppState {
  page: Page;
+ id?: number;
+ drafter?: string;
 }
 
 export class App extends Component<{}, AppState> {
 
   constructor(props: any) {
     super(props);
-    this.state = {page: "main"};
+    this.state = {page: "main", id: 0};
   }
   
   render = (): JSX.Element => {
-    if (this.state.page === "pick") {
-      return <p>hi</p>
+    if (this.state.page === "details" && this.state.id !== undefined) {
+      return (<DraftDetails id={this.state.id} drafter={this.state.drafter} onBack={this.handleBack}></DraftDetails>);
     } else {
       return (
               <table cellPadding={10} cellSpacing={0}>
@@ -34,8 +37,12 @@ export class App extends Component<{}, AppState> {
     }
   };
 
+  handleBack = (): void => {
+    this.setState({page: "main"});
+  }
+  
   handleShow = (id: number, drafter: string | undefined): void => {
-    console.log(id, drafter);
+    this.setState({page: "details", id: id, drafter: drafter});
   }
 
 }

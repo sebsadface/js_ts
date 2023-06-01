@@ -28,7 +28,6 @@ export class JoinDraft extends Component<JoinDraftProps, JoinDraftState> {
                 <td>
                   <label htmlFor="drafterJoin">Drafter: </label> 
                  <input type="text" id="drafterJoin" name="drafterJoin" value={this.state.drafter} 
-                        placeholder="Kevin"
                         minLength={0} maxLength={128} size={35} spellCheck={true}
                         onChange={this.handleDrafter}></input>
                 </td>
@@ -36,7 +35,7 @@ export class JoinDraft extends Component<JoinDraftProps, JoinDraftState> {
               <tr>
                 <td>
                      <label htmlFor="id">Draft ID: </label>
-                     <input type="number" id="id" name="id" value={this.state.id} placeholder='0'
+                     <input type="number" id="id" name="id" value={this.state.id}
                                 min={0} max={1024} required onChange={this.handleId}></input>
                 </td>
               </tr>
@@ -58,5 +57,46 @@ export class JoinDraft extends Component<JoinDraftProps, JoinDraftState> {
   }
 
   handleJoin = (): void => {
+    if (this.state.id === undefined) {
+      console.error("Join draft failed: id undefined");
+      alert("Please enter a Draft ID");
+      return;
+    }
+
+    const url: string = "/api/idcheck?id=" + encodeURIComponent(this.state.id);
+    fetch(url).then(this.handleJoinResponse, this.handleServerError); 
+    
+  }
+
+  handleJoinResponse = (res: Response): void => {
+    if (res.status === 200) {
+        res.text().then(this.handleJoinSuccess).catch(this.handleServerError);
+    } else {
+        this.handleServerError(res);
+    }
+  }
+
+  handleJoinSuccess = (val: any): void => {
+    if (typeof val !== "string" || val === null) {
+        console.error("Join draft failed: invalid response to checkid", val);
+        return;
+    }
+
+    if (this.state.id === undefined) {
+        console.error(" (this.state.id undefined) this should be impossible");
+        return;
+    }
+
+    if (val === "true") {
+        this.props.onShow(this.state.id, this.state.drafter);
+    } else if (val === "false"){
+        alert("Draft ID " + this.state.id + " does not exist");
+    } else {
+        console.error("this should be impossible, idcheck is neither true nor false", val);
+    }
+  }
+
+  handleServerError = (res: Response): void => {
+    console.error("unknown error from server:", res.statusText);
   }
 }

@@ -39,7 +39,11 @@ type Draft = {
   rounds: number,
   drafters: Array<string>,
   options: Array<string>,
-  picks: Array<DraftPick>
+  picks: Array<DraftPick>,
+  availableOps: Array<string>,
+  currentDrafter: string,
+  complete: boolean,
+  currentRound: number
 }
 
 const drafts: Map<number, Draft> = new Map();
@@ -47,7 +51,7 @@ const drafts: Map<number, Draft> = new Map();
 export function listDraft(req: Request, res: Response) {
   const id = first(req.query.id);
   if (id === undefined || typeof id !== 'string') {
-    res.status(400).send('missing "id" parameter');
+    res.status(404).send('missing "id" parameter');
     return;
   }
 
@@ -69,9 +73,14 @@ export function pickInDraft(req: Request, res: Response) {
 
   const draft = drafts.get(Number(id));
   if (draft === undefined) {
-    res.status(400).send(`draft with id ${id} not found`);
+    res.status(404).send(`draft with id ${id} not found`);
     return;
   } 
+
+  if (draft.complete) {
+    res.status(400).send(`draft with id ${id} is already complete`);
+    return;
+  }
 
   const drafter = first(req.query.drafter);
   if (drafter === undefined || typeof drafter !== 'string') {
@@ -84,13 +93,29 @@ export function pickInDraft(req: Request, res: Response) {
     res.status(400).send('missing "option" parameter');
     return;
   }
+
   const pick: DraftPick = {
     num: draft.picks.length + 1,
     drafter: drafter,
     option: option
-  }
+  };
 
   draft.picks.push(pick);
+  draft.availableOps.splice(draft.availableOps.indexOf(option), 1);
+
+  if (draft.availableOps.length === 0) {
+    draft.complete = true;
+  } else if (draft.currentDrafter === draft.drafters[draft.drafters.length - 1]) {
+    if (draft.currentRound + 1 > draft.rounds) {
+      draft.complete = true;
+    } else {
+      draft.currentRound += 1;
+      draft.currentDrafter = draft.drafters[0];
+    }
+  } else {
+    draft.currentDrafter = draft.drafters[draft.drafters.indexOf(drafter) + 1];
+  }
+
   res.send(draft);
 }
 
@@ -118,10 +143,29 @@ export function createDraft(req: Request, res: Response) {
     rounds: Number(rounds),
     drafters: drafters.trim().split("\n"),
     options: options.trim().split("\n"),
-    picks: new Array<DraftPick>
+    picks: new Array<DraftPick>,
+    availableOps: options.trim().split("\n"),
+    currentDrafter: drafters.trim().split("\n")[0],
+    complete: false,
+    currentRound: 1
   };
   drafts.set(draft.id, draft);
   res.send(draft);
+}
+
+export function checkId(req: Request, res: Response) {
+  const id = first(req.query.id);
+  if (id === undefined || typeof id !== 'string') {
+    res.status(400).send('missing "id" parameter');
+    return;
+  }
+
+  const draft = drafts.get(Number(id));
+  if (draft === undefined) {
+    res.send(false);
+  } else {
+    res.send(true);
+  }
 }
 
 function idGenerator(): number {

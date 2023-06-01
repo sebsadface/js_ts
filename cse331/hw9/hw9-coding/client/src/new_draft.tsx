@@ -31,7 +31,6 @@ export class NewDraft extends Component<NewDraftProps, NewDraftState> {
                 <td>
                   <label htmlFor="drafterCreate">Drafter: </label> 
                  <input type="text" id="drafterCreate" name="drafterCreate" value={this.state.drafter} 
-                        placeholder="Kevin"
                         minLength={0} maxLength={128} size={35} spellCheck={true}
                         onChange={this.handleDrafter}></input>
                 </td>
@@ -39,7 +38,7 @@ export class NewDraft extends Component<NewDraftProps, NewDraftState> {
               <tr>
                 <td>
                    <label htmlFor="rounds">Rounds: </label>
-                  <input type="number" id="rounds" name="rounds" value={this.state.rounds} placeholder='3'
+                  <input type="number" id="rounds" name="rounds" value={this.state.rounds}
                           min={0} max={1024} required onChange={this.handleRounds}></input>
                 </td>
               </tr>
@@ -48,7 +47,7 @@ export class NewDraft extends Component<NewDraftProps, NewDraftState> {
                   <label htmlFor="options">Options (one per line): </label>
                   <br></br>
                   <textarea id="options" name="options" value={this.state.options} 
-                  placeholder= 'Snickers\nPayday\nTwizzlers\nGummy Bears\nHot Tomales\nSkittles\nSour Patch Kids'
+                  placeholder= 'item1\nitem2\nitem3\n...'
                   minLength={1} maxLength={4096} required spellCheck={true}
                   autoFocus rows={30} cols={35} onChange={this.handleOptions}></textarea>
                 </td>
@@ -56,7 +55,7 @@ export class NewDraft extends Component<NewDraftProps, NewDraftState> {
                    <label htmlFor="drafters">Drafters (one per line, in order): </label>
                    <br></br>
                   <textarea id="drafters" name="drafters" value={this.state.drafters}
-                  placeholder= 'Kevin\nJames'
+                  placeholder= 'drafter1\ndrafter2\ndrafter3\n...'
                   minLength={1} maxLength={4096} required spellCheck={true}
                   autoFocus rows={30} cols={35} onChange={this.handleDrafters}></textarea>
                 </td>
@@ -87,5 +86,58 @@ export class NewDraft extends Component<NewDraftProps, NewDraftState> {
   }
 
   handleCreate = (): void => {
+    if (this.state.rounds === undefined) {
+      console.error("Create draft failed: rounds undefined");
+      alert("Please enter a number of rounds");
+      return;
+    }
+
+    if (this.state.options === undefined) {
+      console.error("Create draft failed: options undefined");
+      alert("Please enter at least one option");
+      return;
+    }
+
+    if (this.state.drafters === undefined) {
+      console.error("Create draft failed: drafters undefined");
+      alert("Please enter at least one drafter");
+      return;
+    }
+
+    const url: string = "/api/create?rounds=" + encodeURIComponent(this.state.rounds);
+
+    fetch(url, {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({drafters: this.state.drafters, options: this.state.options})
+    }).then(this.handleCreateResponse).catch(this.handleServerError);
+  }
+
+  handleCreateResponse = (res: Response): void => {
+    if (res.status === 200) {
+      res.json().then(this.handleCreateJson).catch(this.handleServerError);
+    } else {
+      this.handleServerError(res);
+    }
+  }
+
+  handleCreateJson = (val: any): void => {
+    if (typeof val !== "object" || val === null) {
+      console.error("bad data from server /create: not a record", val);
+      return;
+    }
+
+    if (val.id === undefined || typeof val.id !== "number") {
+      console.error("bad data from server /create: no id", val);
+      return;
+    }
+
+    this.props.onShow(val.id, this.state.drafter);
+  }
+
+  handleServerError = (res: Response): void => {
+    console.error("unknown error from server:", res.statusText);
   }
 }
