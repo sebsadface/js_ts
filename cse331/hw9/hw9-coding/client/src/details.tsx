@@ -40,18 +40,7 @@ export class DraftDetails extends Component<DraftDetailsProps, DraftDetailsState
                     </td>
                     {this.displayDrafter()}
                 </tr>
-                    <tr>
-                        <td>
-                            <th>Num</th>
-                        </td>
-                        <td>
-                            <th>Pick</th>
-                        </td>
-                        <td>
-                            <th>Drafter</th>
-                        </td>
-                    </tr>
-                    {this.state.picks}
+                    {this.displayPicks()}
                     <tr><td colSpan={3}></td></tr>
                     <tr><td colSpan={3}></td></tr>
                     <tr><td colSpan={3}></td></tr>
@@ -61,16 +50,47 @@ export class DraftDetails extends Component<DraftDetailsProps, DraftDetailsState
     }
   }
 
-  // Displays the drafter status of the current user.
-  displayDrafter =(): JSX.Element => {
-    if (this.props.drafter === undefined || !this.state.drafters?.includes(this.props.drafter)) {
-        return (<td>
-            <th>You are a viewer of this draft.</th>
-        </td>);
+  // Displays the picks made so far.
+  displayPicks = (): JSX.Element[] => {
+    if (this.state.picks === undefined || this.state.picks.length === 0) {
+        return ([
+            <tr>
+                <td colSpan={3}>
+                    No picks has been made yet.
+                </td>
+            </tr>
+        ]);
     } else {
-        return (<td>
+        return ([<tr>
+                    <td>
+                        <th>Num</th>
+                    </td>
+                    <td>
+                        <th>Pick</th>
+                    </td>
+                    <td>
+                        <th>Drafter</th>
+                    </td>
+                </tr>].concat(this.state.picks)); 
+    }
+  }
+  
+  // Displays the drafter status of the current user.
+  displayDrafter =(): JSX.Element[] => {
+    if (this.props.drafter === undefined || !this.state.drafters?.includes(this.props.drafter)) {
+        return ([
+        <td></td>,
+        <td></td>,
+        <td>
+            <th>You are a viewer of this draft.</th>
+        </td>]);
+    } else {
+        return ([
+        <td></td>,
+        <td></td>,
+        <td>
             <th>You are drafter: {this.props.drafter}</th>
-        </td>);
+        </td>]);
     }
   }
 
