@@ -1,2 +1,2 @@
-# prog_js_ts
+# js_ts
 JavaScript &amp; TypeScript Projects
